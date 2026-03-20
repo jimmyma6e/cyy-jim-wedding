@@ -19,7 +19,7 @@
     --text: #5a4540;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-snap-type: y mandatory; overflow-y: scroll; scroll-behavior: smooth; height: 100%; }
+  html { scroll-snap-type: y mandatory; overflow-y: scroll; scroll-behavior: smooth; height: 100%; background: var(--dark); }
   body { font-family: 'Lato', sans-serif; font-weight: 300; color: var(--text); overflow-x: hidden; height: 100%; }
   body::after {
     content: '';
@@ -34,6 +34,17 @@
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     position: relative; overflow: hidden;
+    transform-origin: 50% 0;
+    will-change: transform;
+    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1), border-radius 0.5s ease;
+  }
+  .page:not(#page-hero) {
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -16px 60px rgba(0,0,0,0.35);
+  }
+  .page.card-out {
+    transform: scale(0.94);
+    border-radius: 16px 16px 0 0;
   }
   /* dot nav */
   .dot-nav { position: fixed; right: 28px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 12px; z-index: 100; }
@@ -61,10 +72,11 @@
   .hero-invite-to {
     display: none;
     margin-bottom: 26px;
-    opacity: 0;
-    animation: fadeUp 1s ease 0.1s forwards;
   }
-  .hero-invite-to.visible { display: block; }
+  .hero-invite-to.visible {
+    display: block;
+    animation: fadeUp 0.9s ease 0.1s both;
+  }
   .hero-invite-dear {
     font-family: 'Cinzel', serif;
     font-size: 9px;
@@ -105,7 +117,12 @@
   /* details */
   #page-details { background: var(--ivory); padding: 0 40px; overflow-y: auto; }
   @media (max-width: 600px) {
-    #page-details { justify-content: flex-start; padding: 60px 24px 40px; }
+    #page-details { justify-content: flex-start; padding: 40px 20px 32px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    #page-details .page-section-title { margin-bottom: 20px; }
+    #page-details .slim-divider { margin-bottom: 16px; }
+    .tl-item { padding: 14px 0; }
+    .tl-value { font-size: 18px; }
+    .tl-sub { font-size: 12px; }
   }
   .details-wrap { width: 100%; max-width: 860px; display: flex; flex-direction: column; align-items: center; }
   .page-section-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.55em; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
@@ -578,6 +595,18 @@
   pages.forEach(id => { const el = document.getElementById(id); if(el) io.observe(el); });
 
   function goTo(idx) { document.getElementById(pages[idx]).scrollIntoView({ behavior: 'smooth' }); }
+
+  // ── Apple card scale effect ──
+  const cardObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.intersectionRatio < 0.5) {
+        e.target.classList.add('card-out');
+      } else {
+        e.target.classList.remove('card-out');
+      }
+    });
+  }, { threshold: 0.5 });
+  pages.forEach(id => { const el = document.getElementById(id); if(el) cardObs.observe(el); });
 
   const revealEls = document.querySelectorAll('.reveal');
   const revealObs = new IntersectionObserver(entries => {
