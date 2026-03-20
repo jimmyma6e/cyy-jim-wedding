@@ -42,9 +42,18 @@
   @media (max-height: 700px) {
     #page-details, #page-story {
       justify-content: flex-start;
-      padding-top: 40px;
-      padding-bottom: 32px;
+      padding-top: 28px;
+      padding-bottom: 20px;
     }
+    #page-details .page-section-title,
+    #page-story .page-section-title { margin-bottom: 16px; }
+    #page-details .slim-divider,
+    #page-story .slim-divider { margin-bottom: 12px; }
+    .details-date-line { margin-bottom: 4px; }
+    .details-venue { margin-bottom: 14px; }
+    .tl-item { padding: 9px 0 9px 24px; }
+    .tl-rsvp-note { margin-top: 14px; padding: 10px 20px; }
+    #page-story .story-body { font-size: clamp(14px, 1.8vw, 17px); }
   }
   .page-flow { overflow: visible; }
   .page:not(#page-hero) {
