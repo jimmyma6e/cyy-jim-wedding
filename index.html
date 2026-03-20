@@ -39,6 +39,9 @@
     transition: transform 0.5s cubic-bezier(0.4,0,0.2,1), border-radius 0.5s ease;
   }
   .page-fixed { height: 100vh; min-height: 0; }
+  @media (max-height: 700px) {
+    #page-details { height: auto; min-height: 100vh; padding-top: 48px; padding-bottom: 48px; justify-content: flex-start; overflow-y: auto; }
+  }
   .page-flow { overflow: visible; }
   .page:not(#page-hero) {
     border-radius: 24px 24px 0 0;
