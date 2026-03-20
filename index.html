@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crystal & Jimmy — June 21, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@400;500&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6f0;
+    --ivory: #f2e8da;
+    --blush: #d4a5a0;
+    --rose: #b5736d;
+    --deep-rose: #8b4c47;
+    --sage: #8a9e8c;
+    --gold: #c9a96e;
+    --dark: #3a2e2b;
+    --text: #5a4540;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-snap-type: y mandatory; overflow-y: scroll; scroll-behavior: smooth; height: 100%; }
+  body { font-family: 'Lato', sans-serif; font-weight: 300; color: var(--text); overflow-x: hidden; height: 100%; }
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .page {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    height: 100vh; width: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  /* dot nav */
+  .dot-nav { position: fixed; right: 28px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 12px; z-index: 100; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--blush); cursor: pointer; transition: all 0.3s; background: transparent; }
+  .dot.active { background: var(--gold); border-color: var(--gold); transform: scale(1.3); }
+  /* hero */
+  #page-hero { background: var(--cream); text-align: center; padding: 0 24px; }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 90% 55% at 50% -5%, rgba(212,165,160,0.28) 0%, transparent 65%),
+      radial-gradient(ellipse 45% 35% at 85% 85%, rgba(138,158,140,0.14) 0%, transparent 55%),
+      radial-gradient(ellipse 35% 28% at 8% 75%, rgba(201,169,110,0.1) 0%, transparent 55%);
+  }
+  .botanical { position: absolute; opacity: 0.16; pointer-events: none; }
+  .botanical-tl { top: -10px; left: -10px; }
+  .botanical-tr { top: -10px; right: -10px; transform: scaleX(-1); }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-tagline { font-family: 'Cinzel', serif; font-size: clamp(11px,1.4vw,14px); letter-spacing: 0.55em; color: var(--gold); text-transform: uppercase; margin-bottom: 28px; opacity: 0; animation: fadeUp 1s ease 0.3s forwards; }
+  .hero-names { font-family: 'Cormorant Garamond', serif; font-size: clamp(72px,13vw,148px); font-weight: 300; line-height: 0.88; color: var(--dark); letter-spacing: -0.02em; opacity: 0; animation: fadeUp 1.1s ease 0.5s forwards; }
+  .hero-names .amp { font-style: italic; color: var(--rose); font-size: 0.72em; display: block; margin: 4px 0; }
+  .hero-dateline { display: flex; align-items: center; gap: 20px; justify-content: center; margin: 36px 0 18px; opacity: 0; animation: fadeUp 1s ease 0.8s forwards; }
+  .hero-dateline hr { width: 70px; border: none; border-top: 1px solid var(--blush); }
+  .hero-date-text { font-family: 'Cinzel', serif; font-size: clamp(12px,1.6vw,15px); letter-spacing: 0.35em; color: var(--deep-rose); }
+  .hero-venue { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(17px,2.2vw,22px); color: var(--blush); opacity: 0; animation: fadeUp 1s ease 1s forwards; }
+  .page-hint { position: absolute; bottom: 28px; display: flex; flex-direction: column; align-items: center; gap: 10px; opacity: 0; animation: fadeUp 1s ease 1.3s forwards; }
+  .page-hint span { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--blush); text-transform: uppercase; }
+  .page-hint-line { width: 1px; height: 44px; background: linear-gradient(to bottom, var(--blush), transparent); animation: pulse 2.2s ease-in-out infinite; }
+  /* details */
+  #page-details { background: var(--ivory); padding: 0 40px; }
+  .details-wrap { width: 100%; max-width: 860px; display: flex; flex-direction: column; align-items: center; }
+  .page-section-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.55em; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
+  .page-section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px,4.5vw,52px); font-weight: 300; color: var(--dark); text-align: center; line-height: 1.1; margin-bottom: 40px; }
+  .slim-divider { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+  .slim-divider hr { width: 80px; border: none; border-top: 1px solid var(--blush); }
+  .slim-diamond { width: 5px; height: 5px; background: var(--gold); transform: rotate(45deg); }
+  .timeline { width: 100%; max-width: 620px; display: flex; flex-direction: column; position: relative; }
+  .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent, var(--blush) 15%, var(--blush) 85%, transparent); transform: translateX(-50%); }
+  .tl-item { display: grid; grid-template-columns: 1fr 40px 1fr; align-items: center; padding: 22px 0; }
+  .tl-left { text-align: right; padding-right: 28px; }
+  .tl-right { text-align: left; padding-left: 28px; }
+  .tl-center { display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
+  .tl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ivory); border: 2px solid var(--gold); }
+  .tl-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; }
+  .tl-value { font-family: 'Cormorant Garamond', serif; font-size: clamp(19px,2.2vw,24px); font-weight: 400; color: var(--dark); line-height: 1.2; }
+  .tl-sub { font-size: 13px; color: var(--text); opacity: 0.65; margin-top: 3px; line-height: 1.5; }
+  /* story */
+  #page-story { background: var(--dark); padding: 0 40px; text-align: center; }
+  #page-story::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 25% 40%, rgba(212,165,160,0.09) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 75% 60%, rgba(201,169,110,0.07) 0%, transparent 60%); }
+  .story-wrap { max-width: 700px; position: relative; z-index: 1; }
+  #page-story .page-section-label { color: var(--gold); }
+  #page-story .page-section-title { color: var(--cream); }
+  #page-story .slim-divider { justify-content: center; }
+  #page-story .slim-divider hr { border-color: rgba(255,255,255,0.12); }
+  .story-pull { font-family: 'Cinzel', serif; font-size: clamp(11px,1.4vw,13px); letter-spacing: 0.5em; color: var(--blush); text-transform: uppercase; margin-bottom: 28px; }
+  .story-body { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(21px,2.6vw,30px); font-weight: 300; line-height: 1.75; color: rgba(250,246,240,0.88); }
+  .story-body em { font-style: normal; color: var(--blush); }
+  /* rsvp */
+  #page-rsvp { background: var(--cream); padding: 0 24px; justify-content: flex-start; overflow-y: auto; }
+  .rsvp-inner { width: 100%; max-width: 640px; margin: 0 auto; padding: 60px 0 80px; }
+  #page-rsvp .page-section-label { text-align: center; }
+  #page-rsvp .page-section-title { text-align: center; }
+  #page-rsvp .slim-divider { justify-content: center; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .form-row.single { grid-template-columns: 1fr; }
+  .form-group { display: flex; flex-direction: column; gap: 7px; }
+  .form-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--deep-rose); text-transform: uppercase; }
+  .form-input, .form-select, .form-textarea { background: transparent; border: none; border-bottom: 1px solid var(--blush); padding: 10px 2px; color: var(--dark); font-family: 'Lato', sans-serif; font-size: 15px; font-weight: 300; transition: border-color 0.3s; outline: none; width: 100%; border-radius: 0; }
+  .form-input::placeholder, .form-textarea::placeholder { color: rgba(90,69,64,0.3); }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-bottom-color: var(--rose); }
+  .form-select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b5736d' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 4px center; }
+  .form-select option { background: white; color: var(--dark); }
+  .form-textarea { resize: none; min-height: 72px; line-height: 1.6; }
+  .attendance-toggle { display: flex; gap: 10px; margin-bottom: 20px; }
+  .toggle-btn { flex: 1; padding: 13px; background: transparent; border: 1px solid var(--blush); color: var(--blush); font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; border-radius: 1px; }
+  .toggle-btn.active { background: var(--rose); border-color: var(--rose); color: white; }
+  .dietary-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(130px,1fr)); gap: 8px; margin-top: 10px; }
+  .dietary-option { position: relative; }
+  .dietary-option input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .dietary-option label { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid rgba(90,69,64,0.18); cursor: pointer; font-size: 13px; color: var(--text); transition: all 0.2s; user-select: none; }
+  .dietary-option input:checked + label { border-color: var(--rose); background: rgba(181,115,109,0.07); color: var(--dark); }
+  .check-box { width: 14px; height: 14px; border: 1px solid rgba(90,69,64,0.25); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .dietary-option input:checked + label .check-box { background: var(--rose); border-color: var(--rose); }
+  .dietary-option input:checked + label .check-box::after { content: ''; width: 7px; height: 4px; border-left: 1.5px solid white; border-bottom: 1.5px solid white; transform: rotate(-45deg) translateY(-1px); }
+  .submit-btn { width: 100%; margin-top: 28px; padding: 17px; background: var(--dark); border: none; color: var(--cream); font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.5em; text-transform: uppercase; cursor: pointer; transition: background 0.3s, letter-spacing 0.3s; }
+  .submit-btn:hover { background: var(--rose); letter-spacing: 0.65em; }
+  .submit-btn:disabled { opacity: 0.5; pointer-events: none; }
+  .success-message { display: none; text-align: center; padding: 40px 20px; }
+  .success-message.visible { display: block; }
+  .rsvp-form.hidden { display: none; }
+  .success-ring { width: 68px; height: 68px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--gold); }
+  .success-title { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-style: italic; font-weight: 300; color: var(--dark); margin-bottom: 12px; }
+  .success-sub { font-size: 15px; color: var(--text); opacity: 0.65; line-height: 1.8; }
+  /* footer */
+  #page-footer { background: var(--dark); height: auto; min-height: 140px; padding: 60px 24px; scroll-snap-align: start; }
+  .footer-names { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-style: italic; color: rgba(250,246,240,0.25); margin-bottom: 10px; text-align: center; }
+  .footer-date { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.45em; color: rgba(201,169,110,0.45); text-align: center; }
+  /* reveal */
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.75s ease, transform 0.75s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @keyframes pulse { 0%,100% { opacity: 0.35; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(1.12); } }
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+    .dietary-grid { grid-template-columns: 1fr 1fr; }
+    .timeline::before { left: 18px; }
+    .tl-item { grid-template-columns: 24px 1fr; }
+    .tl-left { display: none; }
+    .tl-right { padding-left: 16px; }
+    .dot-nav { right: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="dot-nav" id="dotNav">
+  <div class="dot active" onclick="goTo(0)"></div>
+  <div class="dot" onclick="goTo(1)"></div>
+  <div class="dot" onclick="goTo(2)"></div>
+  <div class="dot" onclick="goTo(3)"></div>
+</nav>
+
+<!-- PAGE 1 · HERO -->
+<section class="page" id="page-hero">
+  <div class="hero-bg"></div>
+  <svg class="botanical botanical-tl" width="260" height="260" viewBox="0 0 260 260" fill="none">
+    <path d="M18 242 Q38 168 112 132 Q74 168 56 228" stroke="#8a9e8c" stroke-width="1.2" fill="none"/>
+    <path d="M18 242 Q56 188 148 170" stroke="#b5736d" stroke-width="0.9" fill="none"/>
+    <path d="M18 242 Q28 132 76 56" stroke="#8a9e8c" stroke-width="1.2" fill="none"/>
+    <path d="M76 56 Q112 38 130 18" stroke="#8a9e8c" stroke-width="1" fill="none"/>
+    <ellipse cx="138" cy="13" rx="15" ry="9" fill="#d4a5a0" transform="rotate(-28 138 13)"/>
+    <ellipse cx="80" cy="51" rx="13" ry="7" fill="#d4a5a0" transform="rotate(18 80 51)"/>
+    <ellipse cx="50" cy="122" rx="17" ry="9" fill="#b5736d" transform="rotate(-8 50 122)"/>
+    <ellipse cx="112" cy="94" rx="11" ry="6" fill="#d4a5a0" transform="rotate(38 112 94)"/>
+    <circle cx="132" cy="57" r="3.5" fill="#c9a96e"/>
+    <circle cx="90" cy="37" r="2.5" fill="#c9a96e"/>
+    <circle cx="56" cy="84" r="3" fill="#8a9e8c"/>
+  </svg>
+  <svg class="botanical botanical-tr" width="260" height="260" viewBox="0 0 260 260" fill="none">
+    <path d="M18 242 Q38 168 112 132 Q74 168 56 228" stroke="#8a9e8c" stroke-width="1.2" fill="none"/>
+    <path d="M18 242 Q56 188 148 170" stroke="#b5736d" stroke-width="0.9" fill="none"/>
+    <path d="M18 242 Q28 132 76 56" stroke="#8a9e8c" stroke-width="1.2" fill="none"/>
+    <path d="M76 56 Q112 38 130 18" stroke="#8a9e8c" stroke-width="1" fill="none"/>
+    <ellipse cx="138" cy="13" rx="15" ry="9" fill="#d4a5a0" transform="rotate(-28 138 13)"/>
+    <ellipse cx="80" cy="51" rx="13" ry="7" fill="#d4a5a0" transform="rotate(18 80 51)"/>
+    <ellipse cx="50" cy="122" rx="17" ry="9" fill="#b5736d" transform="rotate(-8 50 122)"/>
+    <ellipse cx="112" cy="94" rx="11" ry="6" fill="#d4a5a0" transform="rotate(38 112 94)"/>
+    <circle cx="132" cy="57" r="3.5" fill="#c9a96e"/>
+    <circle cx="90" cy="37" r="2.5" fill="#c9a96e"/>
+    <circle cx="56" cy="84" r="3" fill="#8a9e8c"/>
+  </svg>
+  <div class="hero-content">
+    <div class="hero-tagline">Together with their families</div>
+    <h1 class="hero-names">
+      Crystal
+      <span class="amp">&amp;</span>
+      Jimmy
+    </h1>
+    <div class="hero-dateline">
+      <hr><span class="hero-date-text">June 21 · 2026</span><hr>
+    </div>
+    <div class="hero-venue">The Teahouse, Stanley Park · Vancouver</div>
+  </div>
+  <div class="page-hint">
+    <div class="page-hint-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- PAGE 2 · DETAILS -->
+<section class="page" id="page-details">
+  <div class="details-wrap">
+    <p class="page-section-label reveal">The Day</p>
+    <h2 class="page-section-title reveal">Wedding Details</h2>
+    <div class="slim-divider reveal"><hr><div class="slim-diamond"></div><hr></div>
+    <div class="timeline reveal">
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-label">Date</div>
+          <div class="tl-value">Sunday<br>June 21, 2026</div>
+        </div>
+        <div class="tl-center"><div class="tl-dot"></div></div>
+        <div class="tl-right">
+          <div class="tl-label">Venue</div>
+          <div class="tl-value">The Teahouse</div>
+          <div class="tl-sub">7501 Stanley Park Drive, Vancouver BC</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-label">Arrival</div>
+          <div class="tl-value">10:30 AM</div>
+          <div class="tl-sub">Snacks &amp; Coffee</div>
+        </div>
+        <div class="tl-center"><div class="tl-dot"></div></div>
+        <div class="tl-right">
+          <div class="tl-label">Ceremony</div>
+          <div class="tl-value">11:30 AM</div>
+          <div class="tl-sub">We say "I do"</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-label">Celebration</div>
+          <div class="tl-value">1:00 PM</div>
+          <div class="tl-sub">Lunch &amp; festivities</div>
+        </div>
+        <div class="tl-center"><div class="tl-dot"></div></div>
+        <div class="tl-right">
+          <div class="tl-label">RSVP By</div>
+          <div class="tl-value">April 30, 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 3 · STORY -->
+<section class="page" id="page-story">
+  <div class="story-wrap">
+    <p class="page-section-label reveal">A Note From Us</p>
+    <h2 class="page-section-title reveal">Our Story</h2>
+    <div class="slim-divider reveal" style="justify-content:center;"><hr><div class="slim-diamond"></div><hr></div>
+    <p class="story-pull reveal">Hong Kong &rarr; Vancouver</p>
+    <p class="story-body reveal">
+      One year ago, we arrived in Vancouver — two people carrying big dreams
+      and bigger suitcases — and somehow, <em>the rain felt like home</em>
+      because we were together. Now, beneath the trees of Stanley Park,
+      we are choosing each other <em>for every city, every season, for life.</em>
+      We couldn't imagine celebrating this moment without you.
+    </p>
+  </div>
+</section>
+
+<!-- PAGE 4 · RSVP -->
+<section class="page" id="page-rsvp">
+  <div class="rsvp-inner">
+    <p class="page-section-label reveal">Kindly Reply By April 30, 2026</p>
+    <h2 class="page-section-title reveal">RSVP</h2>
+    <div class="slim-divider reveal" style="justify-content:center;"><hr><div class="slim-diamond"></div><hr></div>
+
+    <div id="guestGreeting" style="display:none; text-align:center; margin-bottom:32px;">
+      <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(22px,3vw,30px); color:var(--dark); line-height:1.4;">
+        Dear <span id="guestName" style="color:var(--rose);"></span>,
+      </p>
+      <p style="font-size:13px; color:var(--text); opacity:0.6; margin-top:6px; font-family:'Lato',sans-serif;">
+        You have been invited — we'd love for you to join us.
+      </p>
+    </div>
+
+    <form class="rsvp-form reveal" id="rsvpForm" onsubmit="handleSubmit(event)">
+      <div style="margin-bottom:20px;">
+        <div class="form-label" style="margin-bottom:10px;">Will you be joining us?</div>
+        <div class="attendance-toggle">
+          <button type="button" class="toggle-btn active" id="yesBtn" onclick="setAttendance('yes')">Joyfully Accepts</button>
+          <button type="button" class="toggle-btn" id="noBtn" onclick="setAttendance('no')">Regretfully Declines</button>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="firstName">First Name</label>
+          <input class="form-input" type="text" id="firstName" placeholder="Your first name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="lastName">Last Name</label>
+          <input class="form-input" type="text" id="lastName" placeholder="Your last name" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <input class="form-input" type="email" id="email" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="guests">Guests Attending</label>
+          <select class="form-select" id="guests">
+            <option value="1">Just me</option>
+            <option value="2">2 guests</option>
+            <option value="3">3 guests</option>
+            <option value="4">4 guests</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" id="dietarySection" style="margin-bottom:16px;">
+        <label class="form-label">Dietary Requirements</label>
+        <div class="dietary-grid">
+          <div class="dietary-option"><input type="checkbox" id="d-none" name="dietary" value="none"><label for="d-none"><span class="check-box"></span>None</label></div>
+          <div class="dietary-option"><input type="checkbox" id="d-veg" name="dietary" value="vegetarian"><label for="d-veg"><span class="check-box"></span>Vegetarian</label></div>
+          <div class="dietary-option"><input type="checkbox" id="d-vegan" name="dietary" value="vegan"><label for="d-vegan"><span class="check-box"></span>Vegan</label></div>
+          <div class="dietary-option"><input type="checkbox" id="d-gf" name="dietary" value="gluten-free"><label for="d-gf"><span class="check-box"></span>Gluten-Free</label></div>
+          <div class="dietary-option"><input type="checkbox" id="d-df" name="dietary" value="dairy-free"><label for="d-df"><span class="check-box"></span>Dairy-Free</label></div>
+          <div class="dietary-option"><input type="checkbox" id="d-nut" name="dietary" value="nut-allergy"><label for="d-nut"><span class="check-box"></span>Nut Allergy</label></div>
+          <div class="dietary-option"><input type="checkbox" id="d-hal" name="dietary" value="halal"><label for="d-hal"><span class="check-box"></span>Halal</label></div>
+          <div class="dietary-option"><input type="checkbox" id="d-kos" name="dietary" value="kosher"><label for="d-kos"><span class="check-box"></span>Kosher</label></div>
+        </div>
+      </div>
+      <div class="form-row single">
+        <div class="form-group">
+          <label class="form-label" for="message">A note for the couple (optional)</label>
+          <textarea class="form-textarea" id="message" placeholder="Wishes, memories, song requests…"></textarea>
+        </div>
+      </div>
+      <button type="submit" class="submit-btn">Send My RSVP</button>
+    </form>
+
+    <div class="success-message" id="successMsg">
+      <div class="success-ring">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <path d="M5 15l6 6L23 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="success-title">We can't wait to see you!</div>
+      <p class="success-sub">Your RSVP has been received.<br>Crystal &amp; Jimmy are so glad you'll be there.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="page-footer" style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--dark);padding:60px 24px;scroll-snap-align:start;">
+  <div class="footer-names">Crystal &amp; Jimmy</div>
+  <div class="footer-date">June 21, 2026 &middot; The Teahouse &middot; Vancouver</div>
+</footer>
+
+<script>
+  // ── Personalised invite via URL param ──
+  // Usage: ?to=Sarah   or   ?to=Sarah%20%26%20Tom   or   ?to=The%20Chan%20Family
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const to = params.get('to');
+    if (to) {
+      document.getElementById('guestName').textContent = to;
+      document.getElementById('guestGreeting').style.display = 'block';
+
+      // Pre-fill name if single person (no & or "Family")
+      const isFamily = /family/i.test(to);
+      const isCouple = to.includes('&') || to.includes(' and ');
+      if (!isFamily && !isCouple) {
+        const parts = to.trim().split(' ');
+        if (parts.length >= 1) document.getElementById('firstName').value = parts[0];
+        if (parts.length >= 2) document.getElementById('lastName').value = parts.slice(1).join(' ');
+        // Lock to 1 guest
+        const sel = document.getElementById('guests');
+        sel.value = '1';
+        sel.innerHTML = '<option value="1">Just me (1 guest)</option>';
+      } else if (isCouple) {
+        const sel = document.getElementById('guests');
+        sel.innerHTML = '<option value="2">2 guests</option>';
+        sel.value = '2';
+      } else if (isFamily) {
+        // family stays flexible
+      }
+    }
+  })();
+
+
+  const dots = document.querySelectorAll('.dot');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const idx = pages.indexOf(e.target.id);
+        if (idx > -1) dots.forEach((d,i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, { threshold: 0.5 });
+  pages.forEach(id => { const el = document.getElementById(id); if(el) io.observe(el); });
+
+  function goTo(idx) { document.getElementById(pages[idx]).scrollIntoView({ behavior: 'smooth' }); }
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('in'), i * 90);
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  let attending = 'yes';
+  function setAttendance(val) {
+    attending = val;
+    document.getElementById('yesBtn').classList.toggle('active', val === 'yes');
+    document.getElementById('noBtn').classList.toggle('active', val === 'no');
+    document.getElementById('dietarySection').style.display = val === 'yes' ? '' : 'none';
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.querySelector('.submit-btn');
+    btn.textContent = 'Sending…'; btn.disabled = true;
+    const dietary = [...document.querySelectorAll('input[name="dietary"]:checked')].map(c=>c.value);
+    const data = {
+      firstName: document.getElementById('firstName').value,
+      lastName: document.getElementById('lastName').value,
+      email: document.getElementById('email').value,
+      guests: document.getElementById('guests').value,
+      attending, dietary,
+      message: document.getElementById('message').value,
+      submittedAt: new Date().toISOString()
+    };
+    console.log('RSVP:', data);
+    setTimeout(() => {
+      document.getElementById('rsvpForm').classList.add('hidden');
+      document.getElementById('successMsg').classList.add('visible');
+    }, 1000);
+  }
+</script>
+</body>
+</html>
