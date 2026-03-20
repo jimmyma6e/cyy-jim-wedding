@@ -63,7 +63,10 @@
   .page-hint span { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--blush); text-transform: uppercase; }
   .page-hint-line { width: 1px; height: 44px; background: linear-gradient(to bottom, var(--blush), transparent); animation: pulse 2.2s ease-in-out infinite; }
   /* details */
-  #page-details { background: var(--ivory); padding: 0 40px; }
+  #page-details { background: var(--ivory); padding: 0 40px; overflow-y: auto; }
+  @media (max-width: 600px) {
+    #page-details { justify-content: flex-start; padding: 60px 24px 40px; }
+  }
   .details-wrap { width: 100%; max-width: 860px; display: flex; flex-direction: column; align-items: center; }
   .page-section-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.55em; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
   .page-section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px,4.5vw,52px); font-weight: 300; color: var(--dark); text-align: center; line-height: 1.1; margin-bottom: 40px; }
