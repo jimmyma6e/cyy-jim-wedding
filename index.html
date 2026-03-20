@@ -44,8 +44,6 @@
       justify-content: flex-start;
       padding-top: 40px;
       padding-bottom: 32px;
-      overflow-y: auto;
-      overscroll-behavior-y: contain;
     }
   }
   .page-flow { overflow: visible; }
@@ -184,11 +182,16 @@
   .tl-label { font-family: 'Cormorant Garamond', serif; font-size: clamp(20px,2.4vw,26px); font-weight: 400; color: var(--dark); line-height: 1.2; }
   .tl-sub { font-size: 13px; color: var(--text); opacity: 0.65; margin-top: 3px; line-height: 1.5; }
   .tl-rsvp-note {
-    text-align: center; margin-top: 32px; padding-top: 24px;
-    border-top: 1px solid rgba(212,165,160,0.25);
+    text-align: center; margin-top: 32px; padding: 18px 24px;
+    border: 1px solid rgba(201,169,110,0.35);
+    background: rgba(201,169,110,0.06);
+    border-radius: 2px;
+    font-family: 'Cinzel', serif;
+    font-size: clamp(10px, 1.4vw, 13px);
+    letter-spacing: 0.25em;
+    color: var(--dark);
+    text-transform: uppercase;
   }
-  .tl-rsvp-note .tl-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 2px; }
-  .tl-rsvp-note .tl-value { font-family: 'Cormorant Garamond', serif; font-size: clamp(18px,2vw,22px); font-weight: 400; color: var(--dark); }
   /* story */
   #page-story { background: var(--dark); padding: 0 40px; text-align: center; }
   #page-story::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 25% 40%, rgba(212,165,160,0.09) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 75% 60%, rgba(201,169,110,0.07) 0%, transparent 60%); }
@@ -533,10 +536,7 @@
         <div class="tl-sub">Lunch &amp; festivities</div>
       </div>
     </div>
-    <div class="tl-rsvp-note reveal">
-      <div class="tl-label">RSVP By</div>
-      <div class="tl-value">April 10, 2026</div>
-    </div>
+    <div class="tl-rsvp-note reveal">RSVP by April 10, 2026</div>
   </div>
 </section>
 
