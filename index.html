@@ -162,7 +162,7 @@
     text-align: center; margin-top: 32px; padding-top: 24px;
     border-top: 1px solid rgba(212,165,160,0.25);
   }
-  .tl-rsvp-note .tl-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; }
+  .tl-rsvp-note .tl-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 2px; }
   .tl-rsvp-note .tl-value { font-family: 'Cormorant Garamond', serif; font-size: clamp(18px,2vw,22px); font-weight: 400; color: var(--dark); }
   /* story */
   #page-story { background: var(--dark); padding: 0 40px; text-align: center; }
@@ -378,7 +378,7 @@
     </div>
     <div class="tl-rsvp-note reveal">
       <div class="tl-label">RSVP By</div>
-      <div class="tl-value">April 30, 2026</div>
+      <div class="tl-value">April 10, 2026</div>
     </div>
   </div>
 </section>
@@ -470,7 +470,7 @@
 <!-- PAGE 5 · RSVP -->
 <section class="page" id="page-rsvp">
   <div class="rsvp-inner">
-    <p class="page-section-label reveal">Kindly Reply By April 30, 2026</p>
+    <p class="page-section-label reveal">Kindly Reply By April 10, 2026</p>
     <h2 class="page-section-title reveal">RSVP</h2>
     <div class="slim-divider reveal" style="justify-content:center;"><hr><div class="slim-diamond"></div><hr></div>
 
@@ -541,14 +541,13 @@
   const DIETARY_OPTIONS = ['None','Vegetarian','Vegan','Gluten-Free','Dairy-Free','Nut Allergy','Halal','Kosher'];
 
   let attending = 'yes';
-  let prefillName = '';
+  let prefillNames = [];
 
   // ── Personalised invite via URL param ──
   (function() {
     const params = new URLSearchParams(window.location.search);
     const to = params.get('to');
     if (to) {
-      prefillName = to;
       document.getElementById('guestName').textContent = to;
       document.getElementById('guestGreeting').style.display = 'block';
       document.getElementById('heroInviteName').textContent = ' ' + to + ',';
@@ -557,14 +556,19 @@
       const isFamily = /family/i.test(to);
       const isCouple = to.includes('&') || to.includes(' and ');
       const sel = document.getElementById('guests');
-      if (!isFamily && !isCouple) {
+
+      if (isCouple) {
+        prefillNames = to.split(/\s*&\s*|\s+and\s+/i).map(n => n.trim()).filter(Boolean);
+        const count = prefillNames.length;
+        sel.innerHTML = `<option value="${count}">${count} guests</option>`;
+        sel.value = count;
+      } else if (!isFamily) {
+        prefillNames = [to];
         sel.innerHTML = '<option value="1">1 guest</option>';
         sel.value = '1';
-      } else if (isCouple) {
-        sel.innerHTML = '<option value="2">2 guests</option>';
-        sel.value = '2';
+      } else {
+        prefillNames = [to.replace(/\s*family$/i, '').trim()];
       }
-      // family: flexible 1–6
     }
     updateGuestSections(parseInt(document.getElementById('guests').value));
   })();
@@ -578,7 +582,7 @@
     }));
     container.innerHTML = '';
     for (let i = 0; i < count; i++) {
-      const savedName = existing[i]?.name ?? (i === 0 ? prefillName : '');
+      const savedName = existing[i]?.name ?? (prefillNames[i] || '');
       const savedDietary = existing[i]?.dietary ?? 'None';
       const savedKidMeal = existing[i]?.kidMeal ?? false;
       const opts = DIETARY_OPTIONS.map(d =>
