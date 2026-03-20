@@ -585,11 +585,11 @@
       document.getElementById('heroInviteTo').classList.add('visible');
 
       const isFamily = /family/i.test(to);
-      const isCouple = to.includes('&') || to.includes(',') || to.includes(' and ');
+      const isCouple = to.includes('&') || to.includes(',') || to.includes('~') || to.includes(' and ');
       const sel = document.getElementById('guests');
 
       if (isCouple) {
-        prefillNames = to.split(/\s*[&,]\s*|\s+and\s+/i).map(n => n.trim()).filter(Boolean);
+        prefillNames = to.split(/\s*[&,~]\s*|\s+and\s+/i).map(n => n.trim()).filter(Boolean);
         const count = prefillNames.length;
         sel.innerHTML = `<option value="${count}">${count} guests</option>`;
         sel.value = count;
