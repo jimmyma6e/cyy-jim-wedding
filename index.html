@@ -133,16 +133,22 @@
   .slim-divider { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
   .slim-divider hr { width: 80px; border: none; border-top: 1px solid var(--blush); }
   .slim-diamond { width: 5px; height: 5px; background: var(--gold); transform: rotate(45deg); }
-  .timeline { width: 100%; max-width: 620px; display: flex; flex-direction: column; position: relative; }
-  .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent, var(--blush) 15%, var(--blush) 85%, transparent); transform: translateX(-50%); }
-  .tl-item { display: grid; grid-template-columns: 1fr 40px 1fr; align-items: center; padding: 22px 0; }
-  .tl-left { text-align: right; padding-right: 28px; }
-  .tl-right { text-align: left; padding-left: 28px; }
-  .tl-center { display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
-  .tl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ivory); border: 2px solid var(--gold); }
-  .tl-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; }
-  .tl-value { font-family: 'Cormorant Garamond', serif; font-size: clamp(19px,2.2vw,24px); font-weight: 400; color: var(--dark); line-height: 1.2; }
-  .tl-sub { font-size: 13px; color: var(--text); opacity: 0.65; margin-top: 3px; line-height: 1.5; }
+  /* details info row */
+  .details-info { display: flex; gap: 32px; margin-bottom: 40px; width: 100%; max-width: 560px; justify-content: center; flex-wrap: wrap; }
+  .info-card { text-align: center; }
+  .info-card .tl-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+  .info-card .tl-value { font-family: 'Cormorant Garamond', serif; font-size: clamp(17px,2vw,22px); font-weight: 400; color: var(--dark); line-height: 1.3; }
+  .info-card .tl-sub { font-size: 13px; color: var(--text); opacity: 0.65; margin-top: 3px; line-height: 1.5; }
+  .info-sep { width: 1px; background: var(--blush); align-self: stretch; opacity: 0.5; }
+  /* vertical timeline */
+  .timeline { width: 100%; max-width: 440px; display: flex; flex-direction: column; position: relative; padding-left: 36px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 10px; bottom: 10px; width: 1px; background: linear-gradient(to bottom, transparent, var(--blush) 10%, var(--blush) 90%, transparent); }
+  .tl-item { display: flex; flex-direction: column; padding: 0 0 32px; position: relative; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-dot { position: absolute; left: -32px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: var(--ivory); border: 2px solid var(--gold); z-index: 1; }
+  .tl-time { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 4px; }
+  .tl-label { font-family: 'Cormorant Garamond', serif; font-size: clamp(20px,2.4vw,26px); font-weight: 400; color: var(--dark); line-height: 1.2; margin-bottom: 3px; }
+  .tl-sub { font-size: 13px; color: var(--text); opacity: 0.65; line-height: 1.5; }
   /* story */
   #page-story { background: var(--dark); padding: 0 40px; text-align: center; }
   #page-story::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 25% 40%, rgba(212,165,160,0.09) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 75% 60%, rgba(201,169,110,0.07) 0%, transparent 60%); }
@@ -256,12 +262,8 @@
   @media (max-width: 600px) {
     .form-row { grid-template-columns: 1fr; }
     .dietary-grid { grid-template-columns: 1fr 1fr; }
-    .timeline::before { display: none; }
-    .tl-item { display: flex; flex-direction: column; gap: 10px; padding: 16px 0; border-bottom: 1px solid rgba(212,165,160,0.2); }
-    .tl-item:last-child { border-bottom: none; }
-    .tl-left { display: block; text-align: left; padding-right: 0; padding-left: 12px; border-left: 2px solid var(--gold); }
-    .tl-center { display: none; }
-    .tl-right { text-align: left; padding-left: 12px; border-left: 2px solid rgba(212,165,160,0.4); }
+    .details-info { gap: 20px; }
+    .info-sep { display: none; }
     .dot-nav { right: 14px; }
   }
 </style>
@@ -335,43 +337,36 @@
     <p class="page-section-label reveal">The Day</p>
     <h2 class="page-section-title reveal">Wedding Details</h2>
     <div class="slim-divider reveal"><hr><div class="slim-diamond"></div><hr></div>
+    <div class="details-info reveal">
+      <div class="info-card">
+        <div class="tl-label">Date</div>
+        <div class="tl-value">Sunday, June 21, 2026</div>
+      </div>
+      <div class="info-sep"></div>
+      <div class="info-card">
+        <div class="tl-label">Venue</div>
+        <div class="tl-value">The Teahouse</div>
+        <div class="tl-sub">7501 Stanley Park Drive, Vancouver BC</div>
+      </div>
+    </div>
     <div class="timeline reveal">
       <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-label">Date</div>
-          <div class="tl-value">Sunday<br>June 21, 2026</div>
-        </div>
-        <div class="tl-center"><div class="tl-dot"></div></div>
-        <div class="tl-right">
-          <div class="tl-label">Venue</div>
-          <div class="tl-value">The Teahouse</div>
-          <div class="tl-sub">7501 Stanley Park Drive, Vancouver BC</div>
-        </div>
+        <div class="tl-dot"></div>
+        <div class="tl-time">10:30 AM</div>
+        <div class="tl-label">Arrival</div>
+        <div class="tl-sub">Snacks &amp; Coffee</div>
       </div>
       <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-label">Arrival</div>
-          <div class="tl-value">10:30 AM</div>
-          <div class="tl-sub">Snacks &amp; Coffee</div>
-        </div>
-        <div class="tl-center"><div class="tl-dot"></div></div>
-        <div class="tl-right">
-          <div class="tl-label">Ceremony</div>
-          <div class="tl-value">11:30 AM</div>
-          <div class="tl-sub">We say "I do"</div>
-        </div>
+        <div class="tl-dot"></div>
+        <div class="tl-time">11:30 AM</div>
+        <div class="tl-label">Ceremony</div>
+        <div class="tl-sub">We say "I do"</div>
       </div>
       <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-label">Celebration</div>
-          <div class="tl-value">1:00 PM</div>
-          <div class="tl-sub">Lunch &amp; festivities</div>
-        </div>
-        <div class="tl-center"><div class="tl-dot"></div></div>
-        <div class="tl-right">
-          <div class="tl-label">RSVP By</div>
-          <div class="tl-value">April 30, 2026</div>
-        </div>
+        <div class="tl-dot"></div>
+        <div class="tl-time">1:00 PM</div>
+        <div class="tl-label">Celebration</div>
+        <div class="tl-sub">Lunch &amp; festivities</div>
       </div>
     </div>
   </div>
