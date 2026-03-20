@@ -141,6 +141,13 @@
   .details-venue .tl-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; }
   .details-venue .tl-value { font-family: 'Cormorant Garamond', serif; font-size: clamp(22px,2.8vw,28px); font-weight: 400; color: var(--dark); line-height: 1.2; }
   .details-venue .tl-sub { font-size: 14px; color: var(--text); opacity: 0.65; margin-top: 5px; line-height: 1.5; }
+  .venue-map-link {
+    display: inline-block; margin-top: 8px;
+    font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.3em;
+    color: var(--rose); text-decoration: none; text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .venue-map-link:hover { color: var(--deep-rose); }
   .details-date-line {
     font-family: 'Cinzel', serif; font-size: clamp(11px,1.4vw,13px);
     letter-spacing: 0.4em; color: var(--deep-rose); text-transform: uppercase;
@@ -213,6 +220,15 @@
   .success-ring { width: 68px; height: 68px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--gold); }
   .success-title { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-style: italic; font-weight: 300; color: var(--dark); margin-bottom: 12px; }
   .success-sub { font-size: 15px; color: var(--text); opacity: 0.65; line-height: 1.8; }
+  .calendar-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 28px; flex-wrap: wrap; }
+  .cal-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px; border: 1px solid var(--blush);
+    font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.25em;
+    color: var(--rose); text-decoration: none; text-transform: uppercase;
+    transition: all 0.3s; cursor: pointer;
+  }
+  .cal-btn:hover { background: var(--rose); color: white; border-color: var(--rose); }
   /* kid meal */
   .kid-meal-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
   .kid-meal-row input[type=checkbox] { display: none; }
@@ -360,6 +376,7 @@
     <div class="details-venue reveal">
       <div class="tl-value">The Teahouse</div>
       <div class="tl-sub">7501 Stanley Park Drive, Vancouver BC</div>
+      <a class="venue-map-link" href="https://maps.google.com/?q=The+Teahouse,+7501+Stanley+Park+Drive,+Vancouver+BC" target="_blank" rel="noopener">View on Map &rarr;</a>
     </div>
     <div class="timeline reveal">
       <div class="tl-item">
@@ -528,6 +545,16 @@
       </div>
       <div class="success-title">We can't wait to see you!</div>
       <p class="success-sub">Your RSVP has been received.<br>Crystal &amp; Jimmy are so glad you'll be there.</p>
+      <div class="calendar-buttons">
+        <a class="cal-btn" href="#" id="icsDownload" onclick="downloadICS(event)">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 6.5h12" stroke="currentColor" stroke-width="1.2"/><path d="M5.5 1.5v3M10.5 1.5v3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Apple Calendar
+        </a>
+        <a class="cal-btn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Crystal+%26+Jimmy%27s+Wedding&amp;dates=20260621T183000Z/20260622T010000Z&amp;location=The+Teahouse%2C+7501+Stanley+Park+Drive%2C+Vancouver+BC&amp;details=We+can%27t+wait+to+celebrate+with+you!" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 6.5h12" stroke="currentColor" stroke-width="1.2"/><path d="M5.5 1.5v3M10.5 1.5v3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Google Calendar
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -694,6 +721,29 @@
         document.getElementById('rsvpForm').classList.add('hidden');
         document.getElementById('successMsg').classList.add('visible');
       });
+  }
+
+  function downloadICS(e) {
+    e.preventDefault();
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Crystal & Jimmy Wedding//EN',
+      'BEGIN:VEVENT',
+      'DTSTART:20260621T183000Z',
+      'DTEND:20260622T010000Z',
+      'SUMMARY:Crystal & Jimmy\'s Wedding',
+      'LOCATION:The Teahouse\\, 7501 Stanley Park Drive\\, Vancouver BC',
+      'DESCRIPTION:We can\'t wait to celebrate with you!',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'crystal-jimmy-wedding.ics';
+    link.click();
+    URL.revokeObjectURL(link.href);
   }
 </script>
 </body>
