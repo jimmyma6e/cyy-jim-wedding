@@ -141,21 +141,23 @@
   /* details */
   #page-details { background: var(--ivory); padding: 72px 40px 48px; justify-content: flex-start; }
   @media (max-width: 600px) {
-    #page-details { justify-content: flex-start; padding: 40px 20px 32px; }
-    #page-details .page-section-title { margin-bottom: 20px; }
-    #page-details .slim-divider { margin-bottom: 16px; }
-    .tl-item { padding: 12px 0 12px 20px; }
+    #page-details { justify-content: flex-start; padding: 36px 20px 24px; }
+    #page-details .page-section-title { margin-bottom: 14px; }
+    #page-details .slim-divider { margin-bottom: 12px; }
+    .details-venue { margin-bottom: 12px; }
+    .tl-item { padding: 9px 0 9px 20px; }
     .tl-label { font-size: 18px; }
     .tl-sub { font-size: 12px; }
+    .tl-rsvp-note { margin-top: 14px; padding: 10px 16px; }
   }
   .details-wrap { width: 100%; max-width: 860px; display: flex; flex-direction: column; align-items: center; }
   .page-section-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.55em; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
-  .page-section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px,4.5vw,52px); font-weight: 300; color: var(--dark); text-align: center; line-height: 1.1; margin-bottom: 40px; }
-  .slim-divider { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+  .page-section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px,4.5vw,52px); font-weight: 300; color: var(--dark); text-align: center; line-height: 1.1; margin-bottom: 24px; }
+  .slim-divider { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
   .slim-divider hr { width: 80px; border: none; border-top: 1px solid var(--blush); }
   .slim-diamond { width: 5px; height: 5px; background: var(--gold); transform: rotate(45deg); }
   .details-venue {
-    text-align: center; margin-bottom: 36px;
+    text-align: center; margin-bottom: 20px;
   }
   .details-venue .tl-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; }
   .details-venue .tl-value { font-family: 'Cormorant Garamond', serif; font-size: clamp(22px,2.8vw,28px); font-weight: 400; color: var(--dark); line-height: 1.2; }
@@ -174,7 +176,7 @@
   }
   .timeline { width: 100%; max-width: 420px; display: flex; flex-direction: column; position: relative; padding-left: 32px; margin: 0 auto; }
   .timeline::before { content: ''; position: absolute; left: 11px; top: 12px; bottom: 12px; width: 1px; background: linear-gradient(to bottom, var(--blush), var(--blush) 85%, transparent); }
-  .tl-item { position: relative; padding: 18px 0 18px 24px; }
+  .tl-item { position: relative; padding: 12px 0 12px 24px; }
   .tl-item::before {
     content: '';
     position: absolute; left: -26px; top: 24px;
@@ -187,7 +189,7 @@
   .tl-label { font-family: 'Cormorant Garamond', serif; font-size: clamp(20px,2.4vw,26px); font-weight: 400; color: var(--dark); line-height: 1.2; }
   .tl-sub { font-size: 13px; color: var(--text); opacity: 0.65; margin-top: 3px; line-height: 1.5; }
   .tl-rsvp-note {
-    text-align: center; margin-top: 32px; padding: 18px 24px;
+    text-align: center; margin-top: 20px; padding: 14px 24px;
     border: 1px solid rgba(201,169,110,0.35);
     background: rgba(201,169,110,0.06);
     border-radius: 2px;
