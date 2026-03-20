@@ -30,7 +30,7 @@
   .page {
     scroll-snap-align: start;
     scroll-snap-stop: always;
-    height: 100vh; width: 100%;
+    min-height: 100vh; width: 100%;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     position: relative; overflow: hidden;
@@ -38,6 +38,8 @@
     will-change: transform;
     transition: transform 0.5s cubic-bezier(0.4,0,0.2,1), border-radius 0.5s ease;
   }
+  .page-fixed { height: 100vh; min-height: 0; }
+  .page-flow { overflow: visible; }
   .page:not(#page-hero) {
     border-radius: 24px 24px 0 0;
     box-shadow: 0 -16px 60px rgba(0,0,0,0.35);
@@ -118,9 +120,9 @@
   .page-hint span { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--blush); text-transform: uppercase; }
   .page-hint-line { width: 1px; height: 44px; background: linear-gradient(to bottom, var(--blush), transparent); animation: pulse 2.2s ease-in-out infinite; }
   /* details */
-  #page-details { background: var(--ivory); padding: 0 40px; overflow-y: auto; }
+  #page-details { background: var(--ivory); padding: 0 40px; }
   @media (max-width: 600px) {
-    #page-details { justify-content: flex-start; padding: 40px 20px 32px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    #page-details { justify-content: flex-start; padding: 40px 20px 32px; }
     #page-details .page-section-title { margin-bottom: 20px; }
     #page-details .slim-divider { margin-bottom: 16px; }
     .tl-item { padding: 12px 0 12px 20px; }
@@ -176,7 +178,7 @@
   .story-body { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(21px,2.6vw,30px); font-weight: 300; line-height: 1.75; color: rgba(250,246,240,0.88); }
   .story-body em { font-style: normal; color: var(--blush); }
   /* rsvp */
-  #page-rsvp { background: var(--cream); padding: 0 24px; justify-content: flex-start; overflow-y: auto; }
+  #page-rsvp { background: var(--cream); padding: 0 24px; justify-content: flex-start; }
   .rsvp-inner { width: 100%; max-width: 640px; margin: 0 auto; padding: 60px 0 80px; }
   #page-rsvp .page-section-label { text-align: center; }
   #page-rsvp .page-section-title { text-align: center; }
@@ -224,7 +226,7 @@
   .guest-header { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.45em; color: var(--sage); text-transform: uppercase; margin-bottom: 12px; }
   .guest-header .guest-you { color: var(--blush); font-family: 'Lato', sans-serif; font-size: 11px; letter-spacing: 0.05em; text-transform: none; margin-left: 6px; opacity: 0.7; }
   /* gallery */
-  #page-gallery { background: var(--ivory); padding: 40px 32px; justify-content: flex-start; overflow-y: auto; }
+  #page-gallery { background: var(--ivory); padding: 40px 32px; justify-content: flex-start; }
   .gallery-inner { width: 100%; max-width: 960px; margin: 0 auto; padding: 40px 0 60px; }
   #page-gallery .page-section-label { text-align: center; }
   #page-gallery .page-section-title { text-align: center; }
@@ -296,7 +298,7 @@
 </nav>
 
 <!-- PAGE 1 · HERO -->
-<section class="page" id="page-hero">
+<section class="page page-fixed" id="page-hero">
   <div class="hero-bg"></div>
   <svg class="botanical botanical-tl" width="260" height="260" viewBox="0 0 260 260" fill="none">
     <path d="M18 242 Q38 168 112 132 Q74 168 56 228" stroke="#8a9e8c" stroke-width="1.2" fill="none"/>
@@ -349,7 +351,7 @@
 </section>
 
 <!-- PAGE 2 · DETAILS -->
-<section class="page" id="page-details">
+<section class="page page-fixed" id="page-details">
   <div class="details-wrap">
     <p class="page-section-label reveal">The Day</p>
     <h2 class="page-section-title reveal">Wedding Details</h2>
@@ -384,7 +386,7 @@
 </section>
 
 <!-- PAGE 3 · STORY -->
-<section class="page" id="page-story">
+<section class="page page-fixed" id="page-story">
   <div class="story-wrap">
     <p class="page-section-label reveal">A Note From Us</p>
     <h2 class="page-section-title reveal">Our Story</h2>
@@ -401,7 +403,7 @@
 </section>
 
 <!-- PAGE 4 · GALLERY -->
-<section class="page" id="page-gallery">
+<section class="page page-flow" id="page-gallery">
   <div class="gallery-inner">
     <p class="page-section-label reveal">Memories Together</p>
     <h2 class="page-section-title reveal">A Glimpse of Us</h2>
@@ -468,7 +470,7 @@
 </section>
 
 <!-- PAGE 5 · RSVP -->
-<section class="page" id="page-rsvp">
+<section class="page page-flow" id="page-rsvp">
   <div class="rsvp-inner">
     <p class="page-section-label reveal">Kindly Reply By April 10, 2026</p>
     <h2 class="page-section-title reveal">RSVP</h2>
