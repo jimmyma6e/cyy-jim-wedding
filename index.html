@@ -123,8 +123,8 @@
     #page-details { justify-content: flex-start; padding: 40px 20px 32px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     #page-details .page-section-title { margin-bottom: 20px; }
     #page-details .slim-divider { margin-bottom: 16px; }
-    .tl-item { padding: 14px 0; }
-    .tl-value { font-size: 18px; }
+    .tl-item { padding: 12px 0 12px 20px; }
+    .tl-label { font-size: 18px; }
     .tl-sub { font-size: 12px; }
   }
   .details-wrap { width: 100%; max-width: 860px; display: flex; flex-direction: column; align-items: center; }
@@ -133,16 +133,37 @@
   .slim-divider { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
   .slim-divider hr { width: 80px; border: none; border-top: 1px solid var(--blush); }
   .slim-diamond { width: 5px; height: 5px; background: var(--gold); transform: rotate(45deg); }
-  .timeline { width: 100%; max-width: 620px; display: flex; flex-direction: column; position: relative; }
-  .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent, var(--blush) 15%, var(--blush) 85%, transparent); transform: translateX(-50%); }
-  .tl-item { display: grid; grid-template-columns: 1fr 40px 1fr; align-items: center; padding: 22px 0; }
-  .tl-left { text-align: right; padding-right: 28px; }
-  .tl-right { text-align: left; padding-left: 28px; }
-  .tl-center { display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
-  .tl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ivory); border: 2px solid var(--gold); }
-  .tl-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; }
-  .tl-value { font-family: 'Cormorant Garamond', serif; font-size: clamp(19px,2.2vw,24px); font-weight: 400; color: var(--dark); line-height: 1.2; }
+  .details-venue {
+    text-align: center; margin-bottom: 36px;
+  }
+  .details-venue .tl-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; }
+  .details-venue .tl-value { font-family: 'Cormorant Garamond', serif; font-size: clamp(22px,2.8vw,28px); font-weight: 400; color: var(--dark); line-height: 1.2; }
+  .details-venue .tl-sub { font-size: 14px; color: var(--text); opacity: 0.65; margin-top: 5px; line-height: 1.5; }
+  .details-date-line {
+    font-family: 'Cinzel', serif; font-size: clamp(11px,1.4vw,13px);
+    letter-spacing: 0.4em; color: var(--deep-rose); text-transform: uppercase;
+    text-align: center; margin-bottom: 8px;
+  }
+  .timeline { width: 100%; max-width: 420px; display: flex; flex-direction: column; position: relative; padding-left: 32px; margin: 0 auto; }
+  .timeline::before { content: ''; position: absolute; left: 11px; top: 12px; bottom: 12px; width: 1px; background: linear-gradient(to bottom, var(--blush), var(--blush) 85%, transparent); }
+  .tl-item { position: relative; padding: 18px 0 18px 24px; }
+  .tl-item::before {
+    content: '';
+    position: absolute; left: -26px; top: 24px;
+    width: 11px; height: 11px; border-radius: 50%;
+    background: var(--ivory); border: 2px solid var(--gold);
+    z-index: 1;
+  }
+  .tl-item:first-child::before { background: var(--gold); }
+  .tl-time { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.35em; color: var(--gold); text-transform: uppercase; margin-bottom: 4px; }
+  .tl-label { font-family: 'Cormorant Garamond', serif; font-size: clamp(20px,2.4vw,26px); font-weight: 400; color: var(--dark); line-height: 1.2; }
   .tl-sub { font-size: 13px; color: var(--text); opacity: 0.65; margin-top: 3px; line-height: 1.5; }
+  .tl-rsvp-note {
+    text-align: center; margin-top: 32px; padding-top: 24px;
+    border-top: 1px solid rgba(212,165,160,0.25);
+  }
+  .tl-rsvp-note .tl-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; }
+  .tl-rsvp-note .tl-value { font-family: 'Cormorant Garamond', serif; font-size: clamp(18px,2vw,22px); font-weight: 400; color: var(--dark); }
   /* story */
   #page-story { background: var(--dark); padding: 0 40px; text-align: center; }
   #page-story::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 25% 40%, rgba(212,165,160,0.09) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 75% 60%, rgba(201,169,110,0.07) 0%, transparent 60%); }
@@ -256,12 +277,10 @@
   @media (max-width: 600px) {
     .form-row { grid-template-columns: 1fr; }
     .dietary-grid { grid-template-columns: 1fr 1fr; }
-    .timeline::before { display: none; }
-    .tl-item { display: flex; flex-direction: column; gap: 10px; padding: 16px 0; border-bottom: 1px solid rgba(212,165,160,0.2); }
-    .tl-item:last-child { border-bottom: none; }
-    .tl-left { display: block; text-align: left; padding-right: 0; padding-left: 12px; border-left: 2px solid var(--gold); }
-    .tl-center { display: none; }
-    .tl-right { text-align: left; padding-left: 12px; border-left: 2px solid rgba(212,165,160,0.4); }
+    .timeline { padding-left: 28px; }
+    .timeline::before { left: 9px; }
+    .tl-item { padding: 14px 0 14px 20px; }
+    .tl-item::before { left: -23px; }
     .dot-nav { right: 14px; }
   }
 </style>
@@ -335,44 +354,31 @@
     <p class="page-section-label reveal">The Day</p>
     <h2 class="page-section-title reveal">Wedding Details</h2>
     <div class="slim-divider reveal"><hr><div class="slim-diamond"></div><hr></div>
+    <div class="details-date-line reveal">Sunday, June 21, 2026</div>
+    <div class="details-venue reveal">
+      <div class="tl-value">The Teahouse</div>
+      <div class="tl-sub">7501 Stanley Park Drive, Vancouver BC</div>
+    </div>
     <div class="timeline reveal">
       <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-label">Date</div>
-          <div class="tl-value">Sunday<br>June 21, 2026</div>
-        </div>
-        <div class="tl-center"><div class="tl-dot"></div></div>
-        <div class="tl-right">
-          <div class="tl-label">Venue</div>
-          <div class="tl-value">The Teahouse</div>
-          <div class="tl-sub">7501 Stanley Park Drive, Vancouver BC</div>
-        </div>
+        <div class="tl-time">10:30 AM</div>
+        <div class="tl-label">Guests Arrive</div>
+        <div class="tl-sub">Snacks &amp; Coffee</div>
       </div>
       <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-label">Arrival</div>
-          <div class="tl-value">10:30 AM</div>
-          <div class="tl-sub">Snacks &amp; Coffee</div>
-        </div>
-        <div class="tl-center"><div class="tl-dot"></div></div>
-        <div class="tl-right">
-          <div class="tl-label">Ceremony</div>
-          <div class="tl-value">11:30 AM</div>
-          <div class="tl-sub">We say "I do"</div>
-        </div>
+        <div class="tl-time">11:30 AM</div>
+        <div class="tl-label">Ceremony</div>
+        <div class="tl-sub">We say "I do"</div>
       </div>
       <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-label">Celebration</div>
-          <div class="tl-value">1:00 PM</div>
-          <div class="tl-sub">Lunch &amp; festivities</div>
-        </div>
-        <div class="tl-center"><div class="tl-dot"></div></div>
-        <div class="tl-right">
-          <div class="tl-label">RSVP By</div>
-          <div class="tl-value">April 30, 2026</div>
-        </div>
+        <div class="tl-time">1:00 PM</div>
+        <div class="tl-label">Celebration</div>
+        <div class="tl-sub">Lunch &amp; festivities</div>
       </div>
+    </div>
+    <div class="tl-rsvp-note reveal">
+      <div class="tl-label">RSVP By</div>
+      <div class="tl-value">April 30, 2026</div>
     </div>
   </div>
 </section>
