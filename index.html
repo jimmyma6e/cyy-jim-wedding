@@ -304,9 +304,138 @@
     .tl-item::before { left: -23px; }
     .dot-nav { right: 14px; }
   }
+  /* ── Envelope Intro ── */
+  #env-scene {
+    position: fixed; inset: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--dark); overflow: hidden;
+  }
+  #env-scene::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 65% at 50% 55%, rgba(58,46,43,0.55) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 12% 88%, rgba(212,165,160,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 35% 30% at 88% 12%, rgba(201,169,110,0.06) 0%, transparent 60%);
+  }
+  #env-skip {
+    position: absolute; top: 22px; right: 24px;
+    background: none; border: none; cursor: pointer;
+    font-family: 'Cinzel', serif; font-size: 9px;
+    letter-spacing: 0.4em; color: rgba(212,165,160,0.38);
+    text-transform: uppercase; padding: 8px; transition: color 0.3s;
+  }
+  #env-skip:hover { color: rgba(212,165,160,0.75); }
+  #env-wrap {
+    position: relative; perspective: 1200px; perspective-origin: 50% 30%;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  #envelope {
+    --ew: min(500px, 86vw);
+    --eh: calc(var(--ew) * 0.63);
+    width: var(--ew); height: var(--eh);
+    position: relative; transform-style: preserve-3d; cursor: pointer;
+  }
+  #env-body {
+    position: absolute; inset: 0; background: #f0e6d5;
+    border-radius: 3px; overflow: hidden; z-index: 1;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.65), 0 8px 28px rgba(0,0,0,0.35),
+                inset 0 0 0 1px rgba(201,169,110,0.22);
+  }
+  .env-fold { position: absolute; inset: 0; }
+  .env-fold-l { clip-path: polygon(0 0,0 100%,50% 50%); background: #e3d5c2; }
+  .env-fold-r { clip-path: polygon(100% 0,100% 100%,50% 50%); background: #e3d5c2; }
+  .env-fold-b { clip-path: polygon(0 100%,100% 100%,50% 46%); background: #d9c9b4; }
+  #env-letter {
+    position: absolute; left: 7%; right: 7%; bottom: 3%; height: 91%;
+    background: var(--cream); border-radius: 2px; z-index: 2;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.1); will-change: transform; padding: 12px;
+  }
+  #env-letter-inner { border: 1px solid rgba(201,169,110,0.3); padding: 14px 18px; width: 100%; }
+  .env-l-tag {
+    font-family: 'Cinzel', serif; font-size: clamp(6px,1.3vw,9px);
+    letter-spacing: 0.5em; color: var(--gold); text-transform: uppercase; margin-bottom: 7px;
+  }
+  .env-l-row { display: flex; align-items: center; gap: 8px; justify-content: center; margin: 7px 0; }
+  .env-l-row hr { flex: 1; border: none; border-top: 1px solid var(--blush); max-width: 36px; }
+  .env-l-gem { width: 4px; height: 4px; background: var(--gold); transform: rotate(45deg); flex-shrink: 0; }
+  .env-l-names {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300; line-height: 1;
+    font-size: clamp(20px,5.5vw,40px); color: var(--dark);
+  }
+  .env-l-names span { display: block; font-style: italic; color: var(--rose); font-size: 0.7em; margin: 2px 0; }
+  .env-l-date {
+    font-family: 'Cinzel', serif; font-size: clamp(7px,1.3vw,10px);
+    letter-spacing: 0.3em; color: var(--deep-rose); margin-top: 4px;
+  }
+  .env-l-venue {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: clamp(10px,2vw,15px); color: var(--sage); margin-top: 3px;
+  }
+  #env-flap {
+    position: absolute; top: 0; left: -1px; right: -1px; height: 56%;
+    clip-path: polygon(0 0,100% 0,50% 100%);
+    background: linear-gradient(175deg, #ede3d4 60%, #e5d9c8 100%);
+    transform-origin: top center; z-index: 5; will-change: transform;
+  }
+  #env-seal {
+    position: absolute; left: 50%; top: 54%;
+    transform: translate(-50%,-50%);
+    width: clamp(38px,9vw,52px); height: clamp(38px,9vw,52px);
+    border-radius: 50%; background: var(--rose);
+    border: 2px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel', serif; font-size: clamp(7px,1.7vw,11px);
+    color: white; letter-spacing: 0.05em; z-index: 6;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12);
+    will-change: transform, opacity;
+  }
+  #env-hint {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    margin-top: 40px; will-change: opacity;
+  }
+  .env-hint-line {
+    width: 1px; height: 34px;
+    background: linear-gradient(to bottom, rgba(212,165,160,0.5), transparent);
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+  .env-hint-txt {
+    font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.45em;
+    color: rgba(212,165,160,0.5); text-transform: uppercase;
+  }
 </style>
 </head>
 <body>
+
+<!-- ENVELOPE INTRO -->
+<div id="env-scene">
+  <button id="env-skip">Skip</button>
+  <div id="env-wrap">
+    <div id="envelope">
+      <div id="env-body">
+        <div class="env-fold env-fold-l"></div>
+        <div class="env-fold env-fold-r"></div>
+        <div class="env-fold env-fold-b"></div>
+      </div>
+      <div id="env-letter">
+        <div id="env-letter-inner">
+          <p class="env-l-tag">Together with their families</p>
+          <div class="env-l-row"><hr><div class="env-l-gem"></div><hr></div>
+          <h2 class="env-l-names">Crystal<span>&amp;</span>Jimmy</h2>
+          <div class="env-l-row"><hr><div class="env-l-gem"></div><hr></div>
+          <p class="env-l-date">June 21 · 2026</p>
+          <p class="env-l-venue">The Teahouse · Stanley Park</p>
+        </div>
+      </div>
+      <div id="env-flap"></div>
+      <div id="env-seal">C&amp;J</div>
+    </div>
+    <div id="env-hint">
+      <div class="env-hint-line"></div>
+      <p class="env-hint-txt">Scroll to open</p>
+    </div>
+  </div>
+</div>
 
 <nav class="dot-nav" id="dotNav">
   <div class="dot active" onclick="goTo(0)"></div>
@@ -568,6 +697,80 @@
 </footer>
 
 <script>
+  // ── Envelope intro ──
+  (function () {
+    const scene  = document.getElementById('env-scene');
+    const flap   = document.getElementById('env-flap');
+    const seal   = document.getElementById('env-seal');
+    const letter = document.getElementById('env-letter');
+    const hint   = document.getElementById('env-hint');
+
+    let prog = 0, done = false, raf = null;
+
+    function ei(t, a, b) { return Math.max(0, Math.min(1, (t - a) / (b - a))); }
+
+    function draw(t) {
+      hint.style.opacity     = 1 - ei(t, 0, .12);
+      const st               = ei(t, 0, .28);
+      seal.style.opacity     = 1 - st;
+      seal.style.transform   = `translate(-50%,-50%) scale(${1 - st * .38})`;
+      const fa               = -ei(t, 0, .48) * 178;
+      flap.style.transform   = `rotateX(${fa}deg)`;
+      flap.style.zIndex      = fa < -89 ? 1 : 5;
+      letter.style.transform = `translateY(${-ei(t, .28, .80) * 110}%)`;
+      scene.style.opacity    = 1 - ei(t, .80, 1);
+    }
+
+    function finish() {
+      if (done) return; done = true;
+      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('touchmove', onTouchMove);
+      draw(1);
+      setTimeout(() => { scene.style.display = 'none'; }, 720);
+    }
+
+    function add(d) {
+      if (done) return;
+      prog = Math.max(0, Math.min(1, prog + d));
+      draw(prog);
+      if (prog >= 1) finish();
+    }
+
+    function onWheel(e) { e.preventDefault(); add(e.deltaY / 550); }
+    window.addEventListener('wheel', onWheel, { passive: false });
+
+    let ty = null;
+    function onTouchMove(e) {
+      e.preventDefault();
+      if (ty === null) return;
+      add((ty - e.touches[0].clientY) / 320);
+      ty = e.touches[0].clientY;
+    }
+    window.addEventListener('touchstart', e => { ty = e.touches[0].clientY; }, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+
+    function animate(dur) {
+      if (raf) return;
+      const s = prog, t0 = performance.now();
+      function tick(now) {
+        const p = Math.min(1, (now - t0) / dur);
+        const e = p < .5 ? 2 * p * p : -1 + (4 - 2 * p) * p;
+        prog = s + (1 - s) * e;
+        draw(prog);
+        if (prog < 1) raf = requestAnimationFrame(tick);
+        else { raf = null; finish(); }
+      }
+      raf = requestAnimationFrame(tick);
+    }
+
+    document.getElementById('envelope').addEventListener('click', () => animate(1800));
+    document.getElementById('env-skip').addEventListener('click', e => {
+      e.stopPropagation(); animate(350);
+    });
+
+    draw(0);
+  })();
+
   const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzowGjOPPzKUOcyMC4g_7TfKKnIbi_ffvJRl3hQYLyziC2i745Mtxatl1ERQbrM0RwzkA/exec';
   const DIETARY_OPTIONS = ['None','Vegetarian','Vegan','Gluten-Free','Dairy-Free','Nut Allergy','Halal','Kosher'];
 
