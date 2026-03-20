@@ -127,6 +127,11 @@
   .success-ring { width: 68px; height: 68px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--gold); }
   .success-title { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-style: italic; font-weight: 300; color: var(--dark); margin-bottom: 12px; }
   .success-sub { font-size: 15px; color: var(--text); opacity: 0.65; line-height: 1.8; }
+  /* guest sections */
+  .guest-section { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid rgba(212,165,160,0.2); }
+  .guest-section:last-child { border-bottom: none; margin-bottom: 0; }
+  .guest-header { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.45em; color: var(--sage); text-transform: uppercase; margin-bottom: 12px; }
+  .guest-header .guest-you { color: var(--blush); font-family: 'Lato', sans-serif; font-size: 11px; letter-spacing: 0.05em; text-transform: none; margin-left: 6px; opacity: 0.7; }
   /* gallery */
   #page-gallery { background: var(--ivory); padding: 40px 32px; justify-content: flex-start; overflow-y: auto; }
   .gallery-inner { width: 100%; max-width: 960px; margin: 0 auto; padding: 40px 0 60px; }
@@ -404,42 +409,22 @@
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label" for="firstName">First Name</label>
-          <input class="form-input" type="text" id="firstName" placeholder="Your first name" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="lastName">Last Name</label>
-          <input class="form-input" type="text" id="lastName" placeholder="Your last name" required>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
           <label class="form-label" for="email">Email</label>
           <input class="form-input" type="email" id="email" placeholder="you@example.com" required>
         </div>
         <div class="form-group">
-          <label class="form-label" for="guests">Guests Attending</label>
-          <select class="form-select" id="guests">
-            <option value="1">Just me</option>
+          <label class="form-label" for="guests">Number of Guests</label>
+          <select class="form-select" id="guests" onchange="updateGuestSections(parseInt(this.value))">
+            <option value="1">1 guest</option>
             <option value="2">2 guests</option>
             <option value="3">3 guests</option>
             <option value="4">4 guests</option>
+            <option value="5">5 guests</option>
+            <option value="6">6 guests</option>
           </select>
         </div>
       </div>
-      <div class="form-group" id="dietarySection" style="margin-bottom:16px;">
-        <label class="form-label">Dietary Requirements</label>
-        <div class="dietary-grid">
-          <div class="dietary-option"><input type="checkbox" id="d-none" name="dietary" value="none"><label for="d-none"><span class="check-box"></span>None</label></div>
-          <div class="dietary-option"><input type="checkbox" id="d-veg" name="dietary" value="vegetarian"><label for="d-veg"><span class="check-box"></span>Vegetarian</label></div>
-          <div class="dietary-option"><input type="checkbox" id="d-vegan" name="dietary" value="vegan"><label for="d-vegan"><span class="check-box"></span>Vegan</label></div>
-          <div class="dietary-option"><input type="checkbox" id="d-gf" name="dietary" value="gluten-free"><label for="d-gf"><span class="check-box"></span>Gluten-Free</label></div>
-          <div class="dietary-option"><input type="checkbox" id="d-df" name="dietary" value="dairy-free"><label for="d-df"><span class="check-box"></span>Dairy-Free</label></div>
-          <div class="dietary-option"><input type="checkbox" id="d-nut" name="dietary" value="nut-allergy"><label for="d-nut"><span class="check-box"></span>Nut Allergy</label></div>
-          <div class="dietary-option"><input type="checkbox" id="d-hal" name="dietary" value="halal"><label for="d-hal"><span class="check-box"></span>Halal</label></div>
-          <div class="dietary-option"><input type="checkbox" id="d-kos" name="dietary" value="kosher"><label for="d-kos"><span class="check-box"></span>Kosher</label></div>
-        </div>
-      </div>
+      <div id="guestSections" style="margin-bottom:16px;"></div>
       <div class="form-row single">
         <div class="form-group">
           <label class="form-label" for="message">A note for the couple (optional)</label>
@@ -468,43 +453,67 @@
 </footer>
 
 <script>
+  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyAtGA9uw1akSKPD5u-vTdOLf5BscjwRaPFD6FZdmyL3yhAdlxCRXXqeZIw1Coh45tfKA/exec';
+  const DIETARY_OPTIONS = ['None','Vegetarian','Vegan','Gluten-Free','Dairy-Free','Nut Allergy','Halal','Kosher'];
+
+  let attending = 'yes';
+  let prefillName = '';
+
   // ── Personalised invite via URL param ──
-  // Usage: ?to=Sarah   or   ?to=Sarah%20%26%20Tom   or   ?to=The%20Chan%20Family
   (function() {
     const params = new URLSearchParams(window.location.search);
     const to = params.get('to');
     if (to) {
+      prefillName = to;
       document.getElementById('guestName').textContent = to;
       document.getElementById('guestGreeting').style.display = 'block';
 
-      // Pre-fill name if single person (no & or "Family")
       const isFamily = /family/i.test(to);
       const isCouple = to.includes('&') || to.includes(' and ');
+      const sel = document.getElementById('guests');
       if (!isFamily && !isCouple) {
-        const parts = to.trim().split(' ');
-        if (parts.length >= 1) document.getElementById('firstName').value = parts[0];
-        if (parts.length >= 2) document.getElementById('lastName').value = parts.slice(1).join(' ');
-        // Lock to 1 guest
-        const sel = document.getElementById('guests');
+        sel.innerHTML = '<option value="1">1 guest</option>';
         sel.value = '1';
-        sel.innerHTML = '<option value="1">Just me (1 guest)</option>';
       } else if (isCouple) {
-        const sel = document.getElementById('guests');
         sel.innerHTML = '<option value="2">2 guests</option>';
         sel.value = '2';
-      } else if (isFamily) {
-        // family stays flexible
       }
+      // family: flexible 1–6
     }
+    updateGuestSections(parseInt(document.getElementById('guests').value));
   })();
 
+  function updateGuestSections(count) {
+    const container = document.getElementById('guestSections');
+    const existing = [...container.querySelectorAll('.guest-section')].map(s => ({
+      name: s.querySelector('.guest-name').value,
+      dietary: s.querySelector('.guest-dietary').value
+    }));
+    container.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const savedName = existing[i]?.name ?? (i === 0 ? prefillName : '');
+      const savedDietary = existing[i]?.dietary ?? 'None';
+      const opts = DIETARY_OPTIONS.map(d =>
+        `<option value="${d}"${d === savedDietary ? ' selected' : ''}>${d}</option>`
+      ).join('');
+      container.insertAdjacentHTML('beforeend', `
+        <div class="guest-section">
+          <div class="guest-header">Guest ${i + 1}${i === 0 ? '<span class="guest-you">(You)</span>' : ''}</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Name</label>
+              <input class="form-input guest-name" type="text" placeholder="Full name" value="${savedName.replace(/"/g,'&quot;')}" required>
+            </div>
+            <div class="form-group guest-dietary-group"${attending === 'no' ? ' style="display:none"' : ''}>
+              <label class="form-label">Dietary</label>
+              <select class="form-select guest-dietary">${opts}</select>
+            </div>
+          </div>
+        </div>`);
+    }
+  }
 
-  // ── Google Sheets integration ──
-  // 1. Open your Google Sheet → Extensions → Apps Script
-  // 2. Paste the doPost(e) script from README, deploy as Web App (Anyone can access)
-  // 3. Replace the URL below with your deployed Web App URL
-  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyAtGA9uw1akSKPD5u-vTdOLf5BscjwRaPFD6FZdmyL3yhAdlxCRXXqeZIw1Coh45tfKA/exec';
-
+  // ── Navigation ──
   const pages = ['page-hero','page-details','page-story','page-gallery','page-rsvp'];
   const dots = document.querySelectorAll('.dot');
   const io = new IntersectionObserver(entries => {
@@ -530,41 +539,44 @@
   }, { threshold: 0.1 });
   revealEls.forEach(el => revealObs.observe(el));
 
-  let attending = 'yes';
   function setAttendance(val) {
     attending = val;
     document.getElementById('yesBtn').classList.toggle('active', val === 'yes');
     document.getElementById('noBtn').classList.toggle('active', val === 'no');
-    document.getElementById('dietarySection').style.display = val === 'yes' ? '' : 'none';
+    document.querySelectorAll('.guest-dietary-group').forEach(el => {
+      el.style.display = val === 'yes' ? '' : 'none';
+    });
   }
 
   function handleSubmit(e) {
     e.preventDefault();
     const btn = document.querySelector('.submit-btn');
     btn.textContent = 'Sending…'; btn.disabled = true;
-    const dietary = [...document.querySelectorAll('input[name="dietary"]:checked')].map(c=>c.value);
+    const guestList = [...document.querySelectorAll('.guest-section')].map(s => ({
+      name: s.querySelector('.guest-name').value,
+      dietary: attending === 'yes' ? s.querySelector('.guest-dietary').value : 'N/A'
+    }));
     const data = {
-      firstName: document.getElementById('firstName').value,
-      lastName: document.getElementById('lastName').value,
       email: document.getElementById('email').value,
-      guests: document.getElementById('guests').value,
       attending,
-      dietary: dietary.join(', '),
+      guests: guestList.length,
       message: document.getElementById('message').value,
       submittedAt: new Date().toISOString()
     };
-    // POST to Google Sheets via Apps Script Web App
-    // Uses no-cors so we can't read the response — show success optimistically
-    const send = SHEETS_URL && SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL'
+    guestList.forEach((g, i) => {
+      data[`guest${i+1}_name`] = g.name;
+      data[`guest${i+1}_dietary`] = g.dietary;
+    });
+    const send = SHEETS_URL
       ? fetch(SHEETS_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         })
-      : Promise.resolve(); // dev mode: skip network call
+      : Promise.resolve();
     send
-      .catch(() => {}) // no-cors fetch may reject in some browsers; still show success
+      .catch(() => {})
       .finally(() => {
         document.getElementById('rsvpForm').classList.add('hidden');
         document.getElementById('successMsg').classList.add('visible');
