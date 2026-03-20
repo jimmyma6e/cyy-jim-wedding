@@ -190,6 +190,13 @@
   .success-ring { width: 68px; height: 68px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--gold); }
   .success-title { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-style: italic; font-weight: 300; color: var(--dark); margin-bottom: 12px; }
   .success-sub { font-size: 15px; color: var(--text); opacity: 0.65; line-height: 1.8; }
+  /* kid meal */
+  .kid-meal-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+  .kid-meal-row input[type=checkbox] { display: none; }
+  .kid-meal-row label { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text); cursor: pointer; user-select: none; }
+  .kid-meal-row .check-box { width: 14px; height: 14px; border: 1px solid rgba(90,69,64,0.25); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .kid-meal-row input:checked + label .check-box { background: var(--rose); border-color: var(--rose); }
+  .kid-meal-row input:checked + label .check-box::after { content: ''; width: 7px; height: 4px; border-left: 1.5px solid white; border-bottom: 1.5px solid white; transform: rotate(-45deg) translateY(-1px); }
   /* guest sections */
   .guest-section { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid rgba(212,165,160,0.2); }
   .guest-section:last-child { border-bottom: none; margin-bottom: 0; }
@@ -250,11 +257,11 @@
     .form-row { grid-template-columns: 1fr; }
     .dietary-grid { grid-template-columns: 1fr 1fr; }
     .timeline::before { display: none; }
-    .tl-item { grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px 0; border-bottom: 1px solid rgba(212,165,160,0.18); }
+    .tl-item { display: flex; flex-direction: column; gap: 10px; padding: 16px 0; border-bottom: 1px solid rgba(212,165,160,0.2); }
     .tl-item:last-child { border-bottom: none; }
-    .tl-left { display: block; text-align: left; padding-right: 8px; }
+    .tl-left { display: block; text-align: left; padding-right: 0; padding-left: 12px; border-left: 2px solid var(--gold); }
     .tl-center { display: none; }
-    .tl-right { padding-left: 8px; border-left: 1px solid rgba(212,165,160,0.25); }
+    .tl-right { text-align: left; padding-left: 12px; border-left: 2px solid rgba(212,165,160,0.4); }
     .dot-nav { right: 14px; }
   }
 </style>
@@ -560,15 +567,18 @@
     const container = document.getElementById('guestSections');
     const existing = [...container.querySelectorAll('.guest-section')].map(s => ({
       name: s.querySelector('.guest-name').value,
-      dietary: s.querySelector('.guest-dietary').value
+      dietary: s.querySelector('.guest-dietary').value,
+      kidMeal: s.querySelector('.guest-kid-meal').checked
     }));
     container.innerHTML = '';
     for (let i = 0; i < count; i++) {
       const savedName = existing[i]?.name ?? (i === 0 ? prefillName : '');
       const savedDietary = existing[i]?.dietary ?? 'None';
+      const savedKidMeal = existing[i]?.kidMeal ?? false;
       const opts = DIETARY_OPTIONS.map(d =>
         `<option value="${d}"${d === savedDietary ? ' selected' : ''}>${d}</option>`
       ).join('');
+      const uid = `kid-${i}`;
       container.insertAdjacentHTML('beforeend', `
         <div class="guest-section">
           <div class="guest-header">Guest ${i + 1}${i === 0 ? '<span class="guest-you">(You)</span>' : ''}</div>
@@ -581,6 +591,10 @@
               <label class="form-label">Dietary</label>
               <select class="form-select guest-dietary">${opts}</select>
             </div>
+          </div>
+          <div class="kid-meal-row guest-dietary-group"${attending === 'no' ? ' style="display:none"' : ''}>
+            <input type="checkbox" class="guest-kid-meal" id="${uid}"${savedKidMeal ? ' checked' : ''}>
+            <label for="${uid}"><span class="check-box"></span>Kid Meal</label>
           </div>
         </div>`);
     }
@@ -639,7 +653,8 @@
     btn.textContent = 'Sending…'; btn.disabled = true;
     const guestList = [...document.querySelectorAll('.guest-section')].map(s => ({
       name: s.querySelector('.guest-name').value,
-      dietary: attending === 'yes' ? s.querySelector('.guest-dietary').value : 'N/A'
+      dietary: attending === 'yes' ? s.querySelector('.guest-dietary').value : 'N/A',
+      kidMeal: attending === 'yes' ? s.querySelector('.guest-kid-meal').checked : false
     }));
     const data = {
       email: document.getElementById('email').value,
@@ -651,6 +666,7 @@
     guestList.forEach((g, i) => {
       data[`guest${i+1}_name`] = g.name;
       data[`guest${i+1}_dietary`] = g.dietary;
+      data[`guest${i+1}_kid_meal`] = g.kidMeal ? 'Yes' : 'No';
     });
     const send = SHEETS_URL
       ? fetch(SHEETS_URL, {
