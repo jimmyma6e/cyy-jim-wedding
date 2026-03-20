@@ -579,9 +579,13 @@
     const params = new URLSearchParams(window.location.search);
     const to = params.get('to');
     if (to) {
-      document.getElementById('guestName').textContent = to;
+      const names = to.split(/\s*[&,~]\s*|\s+and\s+/i).map(n => n.trim()).filter(Boolean);
+      const displayName = names.length > 1
+        ? names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1]
+        : names[0];
+      document.getElementById('guestName').textContent = displayName;
       document.getElementById('guestGreeting').style.display = 'block';
-      document.getElementById('heroInviteName').textContent = ' ' + to + ',';
+      document.getElementById('heroInviteName').textContent = ' ' + displayName + ',';
       document.getElementById('heroInviteTo').classList.add('visible');
 
       const isFamily = /family/i.test(to);
