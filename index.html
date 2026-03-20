@@ -40,19 +40,15 @@
   }
   .page-fixed { height: 100vh; height: 100dvh; min-height: 0; }
   @media (max-height: 700px) {
-    #page-details, #page-story {
-      justify-content: flex-start;
-      padding-top: 28px;
-      padding-bottom: 20px;
-    }
+    #page-details, #page-story { padding-top: 32px; padding-bottom: 24px; }
     #page-details .page-section-title,
-    #page-story .page-section-title { margin-bottom: 16px; }
+    #page-story .page-section-title { margin-bottom: 14px; }
     #page-details .slim-divider,
-    #page-story .slim-divider { margin-bottom: 12px; }
+    #page-story .slim-divider { margin-bottom: 10px; }
     .details-date-line { margin-bottom: 4px; }
-    .details-venue { margin-bottom: 14px; }
-    .tl-item { padding: 9px 0 9px 24px; }
-    .tl-rsvp-note { margin-top: 14px; padding: 10px 20px; }
+    .details-venue { margin-bottom: 12px; }
+    .tl-item { padding: 8px 0 8px 24px; }
+    .tl-rsvp-note { margin-top: 12px; padding: 9px 20px; }
     #page-story .story-body { font-size: clamp(14px, 1.8vw, 17px); }
   }
   .page-flow { overflow: visible; }
@@ -143,7 +139,7 @@
   .page-hint span { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--blush); text-transform: uppercase; }
   .page-hint-line { width: 1px; height: 44px; background: linear-gradient(to bottom, var(--blush), transparent); animation: pulse 2.2s ease-in-out infinite; }
   /* details */
-  #page-details { background: var(--ivory); padding: 0 40px; }
+  #page-details { background: var(--ivory); padding: 72px 40px 48px; justify-content: flex-start; }
   @media (max-width: 600px) {
     #page-details { justify-content: flex-start; padding: 40px 20px 32px; }
     #page-details .page-section-title { margin-bottom: 20px; }
@@ -202,7 +198,7 @@
     text-transform: uppercase;
   }
   /* story */
-  #page-story { background: var(--dark); padding: 0 40px; text-align: center; }
+  #page-story { background: var(--dark); padding: 72px 40px 48px; text-align: center; justify-content: flex-start; }
   #page-story::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 25% 40%, rgba(212,165,160,0.09) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 75% 60%, rgba(201,169,110,0.07) 0%, transparent 60%); }
   .story-wrap { max-width: 700px; position: relative; z-index: 1; }
   #page-story .page-section-label { color: var(--gold); }
