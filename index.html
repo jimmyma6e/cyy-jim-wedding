@@ -797,8 +797,8 @@
       if (isCouple) {
         prefillNames = to.split(/\s*[&,~]\s*|\s+and\s+/i).map(n => n.trim()).filter(Boolean);
         const count = prefillNames.length;
-        sel.innerHTML = `<option value="${count}">${count} guests</option>`;
-        sel.value = count;
+        // pre-select detected count but allow up to 6
+        sel.value = Math.min(count, 6);
       } else if (!isFamily) {
         prefillNames = [to];
         sel.innerHTML = '<option value="1">1 guest</option>';
