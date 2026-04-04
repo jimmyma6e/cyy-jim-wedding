@@ -288,9 +288,10 @@
   }
   .photo-item.land-1 { grid-column: span 3; height: 240px; }
   .photo-item.land-2 { grid-column: span 3; height: 240px; }
-  .photo-item.port-1 { grid-column: span 2; height: 320px; }
-  .photo-item.port-2 { grid-column: span 2; height: 320px; }
-  .photo-item.port-3 { grid-column: span 2; height: 320px; }
+  .photo-item.port-1 { grid-column: span 3; height: 320px; }
+  .photo-item.port-2 { grid-column: span 3; height: 320px; }
+  .photo-item.port-3 { grid-column: span 3; height: 320px; }
+  .photo-item.port-4 { grid-column: span 3; height: 320px; }
   .photo-item img {
     width: 100%; height: 100%;
     object-fit: cover;
@@ -310,7 +311,7 @@
   .photo-placeholder svg { opacity: 0.4; }
   @media (max-width: 640px) {
     .photo-item.land-1, .photo-item.land-2 { grid-column: span 6; height: 200px; }
-    .photo-item.port-1, .photo-item.port-2, .photo-item.port-3 { grid-column: span 3; height: 240px; }
+    .photo-item.port-1, .photo-item.port-2, .photo-item.port-3, .photo-item.port-4 { grid-column: span 3; height: 240px; }
   }
   /* footer */
   #page-footer { background: var(--dark); height: auto; min-height: 140px; padding: 60px 24px; scroll-snap-align: start; }
@@ -563,7 +564,6 @@
       we are choosing each other <em>for every city, every season, for life.</em>
       We couldn't imagine celebrating this moment without you.
     </p>
-    <img class="story-photo reveal" src="photos/mochi.jpg" alt="Mochi">
   </div>
 </section>
 
@@ -604,6 +604,13 @@
       </div>
       <div class="photo-item port-3">
         <img src="photos/05.jpg" alt="Crystal & Jimmy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="photo-placeholder" style="display:none;">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="6" width="22" height="16" rx="2" stroke="currentColor" stroke-width="1.2"/><circle cx="10" cy="13" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M3 19l6-5 4 4 3-3 9 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Add Photo</span>
+        </div>
+      </div>
+      <div class="photo-item port-4">
+        <img src="photos/mochi.jpg" alt="Mochi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="photo-placeholder" style="display:none;">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="6" width="22" height="16" rx="2" stroke="currentColor" stroke-width="1.2"/><circle cx="10" cy="13" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M3 19l6-5 4 4 3-3 9 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span>Add Photo</span>
