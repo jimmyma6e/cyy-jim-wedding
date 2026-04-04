@@ -784,6 +784,34 @@
 
   let attending = 'yes';
   let prefillNames = [];
+  const lang = new URLSearchParams(window.location.search).get('lang');
+
+  const ZH = {
+    envSkip: '略過', envHint: '滑動開啟',
+    heroDear: '親愛的', heroInvited: '您已獲邀 — 期待您的蒞臨。',
+    heroTagline: '攜家人同賀', heroDate: '2026年6月21日', scroll: '滑動',
+    detailsLabel: '婚禮詳情', detailsTitle: '婚禮資訊',
+    weddingDate: '2026年6月21日（星期日）', viewMap: '查看地圖 →',
+    arrival: '賓客到達', arrivalSub: '茶點招待',
+    ceremony: '婚禮儀式', ceremonySub: '誓言交換',
+    celebration: '喜宴慶典', celebrationSub: '午宴同慶',
+    rsvpNote: '請於2026年4月15日前回覆',
+    storyLabel: '我們的話', storyTitle: '我們的故事',
+    storyBody: '一切從兩個人，和一隻很有主見的狗狗 Mochi 開始。無論是每一次的冒險、慵懶的週日，還是各種混亂的日常，<em>我們三個漸漸成了一個家。</em>如今，在 Stanley Park 的樹蔭下，我們選擇彼此，<em>無論身在何城，無論哪個季節，此生不渝。</em>沒有你們的陪伴，這一刻將不再圓滿。',
+    galleryLabel: '美好回憶', galleryTitle: '我們的片段',
+    rsvpLabel: '請於2026年4月15日前回覆', rsvpTitle: '出席回覆',
+    attendQuestion: '您是否出席？', yesBtn: '欣然出席', noBtn: '婉拒出席',
+    emailLabel: '電郵地址', guestsLabel: '出席人數',
+    guestOptions: ['1 位','2 位','3 位','4 位','5 位','6 位'],
+    messageLabel: '給新人的話（選填）', messagePlaceholder: '祝福、回憶、歌曲要求⋯',
+    submitBtn: '送出回覆', sending: '傳送中⋯',
+    successTitle: '期待與您相見！',
+    successSub: '已收到您的回覆。<br>Crystal &amp; Jimmy 非常期待您的到來。',
+    footerDate: '2026年6月21日 · The Teahouse · 溫哥華',
+    guestHeader: i => `賓客 ${i + 1}`, youLabel: '（您）',
+    nameLabel: '姓名', namePlaceholder: '全名',
+    dietaryLabel: '飲食需求', kidMeal: '兒童餐',
+  };
 
   // ── Personalised invite via URL param ──
   (function() {
@@ -792,7 +820,7 @@
     if (to) {
       const names = to.split(/\s*[&,~]\s*|\s+and\s+/i).map(n => n.trim()).filter(Boolean);
       const displayName = names.length > 1
-        ? names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1]
+        ? (lang === 'zh' ? names.join('及') : names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1])
         : names[0];
       document.getElementById('guestName').textContent = displayName;
       document.getElementById('guestGreeting').style.display = 'block';
@@ -832,22 +860,23 @@
         `<option value="${d}"${d === savedDietary ? ' selected' : ''}>${d}</option>`
       ).join('');
       const uid = `kid-${i}`;
+      const isZh = lang === 'zh';
       container.insertAdjacentHTML('beforeend', `
         <div class="guest-section">
-          <div class="guest-header">Guest ${i + 1}${i === 0 ? '<span class="guest-you">(You)</span>' : ''}</div>
+          <div class="guest-header">${isZh ? ZH.guestHeader(i) : `Guest ${i + 1}`}${i === 0 ? `<span class="guest-you">${isZh ? ZH.youLabel : '(You)'}</span>` : ''}</div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Name</label>
-              <input class="form-input guest-name" type="text" placeholder="Full name" value="${savedName.replace(/"/g,'&quot;')}" required>
+              <label class="form-label">${isZh ? ZH.nameLabel : 'Name'}</label>
+              <input class="form-input guest-name" type="text" placeholder="${isZh ? ZH.namePlaceholder : 'Full name'}" value="${savedName.replace(/"/g,'&quot;')}" required>
             </div>
             <div class="form-group guest-dietary-group"${attending === 'no' ? ' style="display:none"' : ''}>
-              <label class="form-label">Dietary</label>
+              <label class="form-label">${isZh ? ZH.dietaryLabel : 'Dietary'}</label>
               <select class="form-select guest-dietary">${opts}</select>
             </div>
           </div>
           <div class="kid-meal-row guest-dietary-group"${attending === 'no' ? ' style="display:none"' : ''}>
             <input type="checkbox" class="guest-kid-meal" id="${uid}"${savedKidMeal ? ' checked' : ''}>
-            <label for="${uid}"><span class="check-box"></span>Kid Meal</label>
+            <label for="${uid}"><span class="check-box"></span>${isZh ? ZH.kidMeal : 'Kid Meal'}</label>
           </div>
         </div>`);
     }
@@ -900,10 +929,51 @@
     });
   }
 
+  function applyLang() {
+    if (lang !== 'zh') return;
+    const s = (sel, txt, html = false) => document.querySelectorAll(sel).forEach(el => html ? el.innerHTML = txt : el.textContent = txt);
+    s('#env-skip', ZH.envSkip);
+    s('.env-hint-txt', ZH.envHint);
+    s('.hero-invite-dear', ZH.heroDear);
+    s('#guestGreeting p:last-child', ZH.heroInvited);
+    s('.hero-tagline', ZH.heroTagline);
+    s('.hero-date-text', ZH.heroDate);
+    s('.page-hint span', ZH.scroll);
+    s('#page-details .page-section-label', ZH.detailsLabel);
+    s('#page-details .page-section-title', ZH.detailsTitle);
+    s('.details-date-line', ZH.weddingDate);
+    s('.venue-map-link', ZH.viewMap);
+    const tl = document.querySelectorAll('.timeline .tl-item');
+    if (tl[0]) { tl[0].querySelector('.tl-label').textContent = ZH.arrival; tl[0].querySelector('.tl-sub').textContent = ZH.arrivalSub; }
+    if (tl[1]) { tl[1].querySelector('.tl-label').textContent = ZH.ceremony; tl[1].querySelector('.tl-sub').textContent = ZH.ceremonySub; }
+    if (tl[2]) { tl[2].querySelector('.tl-label').textContent = ZH.celebration; tl[2].querySelector('.tl-sub').textContent = ZH.celebrationSub; }
+    s('.tl-rsvp-note', ZH.rsvpNote);
+    s('#page-story .page-section-label', ZH.storyLabel);
+    s('#page-story .page-section-title', ZH.storyTitle);
+    s('.story-body', ZH.storyBody, true);
+    s('#page-gallery .page-section-label', ZH.galleryLabel);
+    s('#page-gallery .page-section-title', ZH.galleryTitle);
+    s('#page-rsvp .page-section-label', ZH.rsvpLabel);
+    s('#page-rsvp .page-section-title', ZH.rsvpTitle);
+    s('#rsvpForm div.form-label', ZH.attendQuestion);
+    s('#yesBtn', ZH.yesBtn);
+    s('#noBtn', ZH.noBtn);
+    s('label[for="email"]', ZH.emailLabel);
+    s('label[for="guests"]', ZH.guestsLabel);
+    s('label[for="message"]', ZH.messageLabel);
+    document.querySelectorAll('#guests option').forEach((o, i) => { o.textContent = ZH.guestOptions[i]; });
+    const msg = document.getElementById('message'); if (msg) msg.placeholder = ZH.messagePlaceholder;
+    s('.submit-btn', ZH.submitBtn);
+    s('.success-title', ZH.successTitle);
+    s('.success-sub', ZH.successSub, true);
+    s('.footer-date', ZH.footerDate);
+  }
+  applyLang();
+
   function handleSubmit(e) {
     e.preventDefault();
     const btn = document.querySelector('.submit-btn');
-    btn.textContent = 'Sending…'; btn.disabled = true;
+    btn.textContent = lang === 'zh' ? ZH.sending : 'Sending…'; btn.disabled = true;
     const guestList = [...document.querySelectorAll('.guest-section')].map(s => ({
       name: s.querySelector('.guest-name').value,
       dietary: attending === 'yes' ? s.querySelector('.guest-dietary').value : 'N/A',
