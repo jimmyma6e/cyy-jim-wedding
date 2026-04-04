@@ -64,6 +64,8 @@
   .dot-nav { position: fixed; right: 28px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 12px; z-index: 100; }
   .dot { width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--blush); cursor: pointer; transition: all 0.3s; background: transparent; }
   .dot.active { background: var(--gold); border-color: var(--gold); transform: scale(1.3); }
+  #lang-toggle { position: fixed; top: 18px; right: 18px; z-index: 200; background: transparent; border: 1px solid rgba(201,169,110,0.5); color: var(--gold); font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.2em; padding: 6px 12px; cursor: pointer; transition: all 0.3s; }
+  #lang-toggle:hover { background: var(--gold); color: var(--cream); }
   /* hero */
   #page-hero { background: var(--cream); text-align: center; padding: 0 24px; }
   .hero-card-frame {
@@ -459,6 +461,7 @@
   </div>
 </div>
 
+<button id="lang-toggle" onclick="toggleLang()"></button>
 <nav class="dot-nav" id="dotNav">
   <div class="dot active" onclick="goTo(0)"></div>
   <div class="dot" onclick="goTo(1)"></div>
@@ -797,7 +800,7 @@
     celebration: '喜宴慶典', celebrationSub: '午宴同慶',
     rsvpNote: '請於2026年4月15日前回覆',
     storyLabel: '我們的話', storyTitle: '我們的故事',
-    storyBody: '一切從兩個人，和一隻很有主見的狗狗 Mochi 開始。無論是每一次的冒險、慵懶的週日，還是各種混亂的日常，<em>我們三個漸漸成了一個家。</em>如今，在 Stanley Park 的樹蔭下，我們選擇彼此，<em>無論身在何城，無論哪個季節，此生不渝。</em>沒有你們的陪伴，這一刻將不再圓滿。',
+    storyBody: '一切從兩個人，和一隻狗狗 Mochi 開始。無論是每一次的冒險、慵懶的週日，還是各種混亂的日常，<em>我們三個漸漸成了一個家。</em>如今，在 Stanley Park 的樹蔭下，我們選擇彼此，<em>無論身在何城，無論哪個季節，此生不渝。</em>沒有你們的陪伴，這一刻將不再圓滿。',
     galleryLabel: '美好回憶', galleryTitle: '我們的片段',
     rsvpLabel: '請於2026年4月15日前回覆', rsvpTitle: '出席回覆',
     attendQuestion: '您是否出席？', yesBtn: '欣然出席', noBtn: '婉拒出席',
@@ -969,6 +972,14 @@
     s('.footer-date', ZH.footerDate);
   }
   applyLang();
+  document.getElementById('lang-toggle').textContent = lang === 'zh' ? 'EN' : '中文';
+
+  function toggleLang() {
+    const params = new URLSearchParams(window.location.search);
+    if (lang === 'zh') params.delete('lang');
+    else params.set('lang', 'zh');
+    window.location.search = params.toString();
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
