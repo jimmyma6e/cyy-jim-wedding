@@ -843,6 +843,8 @@
       } else {
         prefillNames = [to.replace(/\s*family$/i, '').trim()];
       }
+      const guestsParam = params.get('guests');
+      if (guestsParam) sel.value = Math.min(Math.max(parseInt(guestsParam) || 1, 1), 6);
     }
     updateGuestSections(parseInt(document.getElementById('guests').value));
   })();
