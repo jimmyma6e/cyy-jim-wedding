@@ -822,7 +822,7 @@
     const to = params.get('to');
     if (to) {
       const names = to.split(/\s*[&,~]\s*|\s+and\s+/i).map(n => n.trim()).filter(Boolean);
-      const zhNameMap = { 'parents': '爸爸媽媽', 'family': '一家人' };
+      const zhNameMap = { 'parents': '爸爸媽媽', 'family': '一家人', 'ma爸': '爸爸', 'ma媽': '媽媽' };
       const toZh = name => {
         const lower = name.toLowerCase().replace(/[''']/g, "'");
         for (const [k, v] of Object.entries(zhNameMap)) if (lower.includes(k)) return v;
