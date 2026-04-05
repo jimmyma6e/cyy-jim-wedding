@@ -822,9 +822,15 @@
     const to = params.get('to');
     if (to) {
       const names = to.split(/\s*[&,~]\s*|\s+and\s+/i).map(n => n.trim()).filter(Boolean);
-      const displayName = names.length > 1
-        ? (lang === 'zh' ? names.join('及') : names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1])
-        : names[0];
+      const zhNameMap = { 'parents': '爸爸媽媽', 'family': '一家人' };
+      const toZh = name => {
+        const lower = name.toLowerCase().replace(/[''']/g, "'");
+        for (const [k, v] of Object.entries(zhNameMap)) if (lower.includes(k)) return v;
+        return name;
+      };
+      const displayName = lang === 'zh'
+        ? (names.length === 1 ? toZh(names[0]) : names.map(toZh).join('及'))
+        : (names.length > 1 ? names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1] : names[0]);
       document.getElementById('guestName').textContent = displayName;
       document.getElementById('guestGreeting').style.display = 'block';
       document.getElementById('heroInviteName').textContent = ' ' + displayName + ',';
